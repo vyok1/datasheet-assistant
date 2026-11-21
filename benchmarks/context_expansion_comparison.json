@@ -1,0 +1,1824 @@
+{
+  "metadata": {
+    "description": "Empirical comparison of baseline BM25 retrieval vs context expansion (window=1, window=2)",
+    "retriever": "BM25Okapi",
+    "top_k": 10,
+    "repeats_per_question": 20,
+    "note_on_metrics": "Context expansion increases evidence coverage (Context Recall) around retrieved chunks on the same page. Original BM25 ranking metrics (Recall@10, MRR, nDCG@10) reflect ranking quality and are not altered by expansion. Expansion chunks receive score=0.0.",
+    "timing_note": "Latencies are local measurements with warm-up and repeated execution."
+  },
+  "aggregate_summary": {
+    "question_count": 20,
+    "top_k": 10,
+    "repeats_per_question": 20,
+    "bm25_retrieval_quality": {
+      "mean_recall_at_10": 0.9,
+      "mean_mrr": 0.8333333333333334,
+      "mean_ndcg_at_10": 0.7951575272009705
+    },
+    "configurations": {
+      "baseline": {
+        "mean_context_recall": 0.9,
+        "mean_chunk_count": 10,
+        "mean_total_chars": 7136,
+        "latency_ms": {
+          "mean": 0.10906825147685595,
+          "p95": 0.21889997879043227
+        }
+      },
+      "window_1": {
+        "mean_context_recall": 1.0,
+        "mean_chunk_count": 10.9,
+        "mean_total_chars": 7443.9,
+        "latency_ms": {
+          "mean": 0.13458300149068236,
+          "p95": 0.27056996477767836
+        },
+        "expansion_overhead_ms": {
+          "mean": 0.025514750013826415,
+          "p95": 0.04946502740494908
+        }
+      },
+      "window_2": {
+        "mean_context_recall": 1.0,
+        "mean_chunk_count": 10.9,
+        "mean_total_chars": 7443.9,
+        "latency_ms": {
+          "mean": 0.13259900224511512,
+          "p95": 0.2683800033992157
+        },
+        "expansion_overhead_ms": {
+          "mean": 0.023530750768259168,
+          "p95": 0.04284497699700297
+        }
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "question": "Which registers configure an STM32 GPIO port?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.07977499335538596,
+            "p95": 0.1639550057007
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.10245000594295561,
+            "p95": 0.21777001966256648
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.022675012587569654,
+            "p95": 0.028520030900836008
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09978499438147992,
+            "p95": 0.1831299799960107
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.02001000102609396,
+            "p95": 0.025185014237649746
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q002",
+      "question": "What types of DMA transfers are supported?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7050,
+          "latency_ms": {
+            "mean": 0.058335004723630846,
+            "p95": 0.059619988314807415
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0269-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.07676500827074051,
+            "p95": 0.07837501470930874
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018430003547109663,
+            "p95": 0.01932503073476255
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.07579999801237136,
+            "p95": 0.08049997268244624
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.017464993288740516,
+            "p95": 0.01878496841527522
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q003",
+      "question": "What is the function of MISO and MOSI in SPI?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.14331000566016883,
+            "p95": 0.25863501941785233
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.17695001151878387,
+            "p95": 0.29844503151252877
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.03364000585861504,
+            "p95": 0.06827498436905446
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.17116001399699599,
+            "p95": 0.2951550646685065
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.02785000833682716,
+            "p95": 0.04885001981165261
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q004",
+      "question": "How does the SPI master select a slave device?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.07243499858304858,
+            "p95": 0.07655999797862023
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09126999648287892,
+            "p95": 0.09804498695302755
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.01883499789983034,
+            "p95": 0.02141998847946525
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09037000709213316,
+            "p95": 0.10086001129820943
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.017935008509084582,
+            "p95": 0.019620030070655055
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q005",
+      "question": "Which signals and registers appear in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.6131471927654584
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 0.5,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.12032499653287232,
+            "p95": 0.2199799811933191
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.14712999400217086,
+            "p95": 0.27658496401272725
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.02680499746929854,
+            "p95": 0.05887498264200986
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.1405599992722273,
+            "p95": 0.2532500046072529
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.020235002739354968,
+            "p95": 0.03417502448428423
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q006",
+      "question": "What are the main components shown in the STM32F4 system architecture diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.09532499825581908,
+            "p95": 0.10523498640395701
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c002"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.11442500399425626,
+            "p95": 0.12732503819279373
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.019100005738437176,
+            "p95": 0.02191005041822791
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.1137549988925457,
+            "p95": 0.12605996744241565
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018430000636726618,
+            "p95": 0.020324977231211964
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q007",
+      "question": "Which GPIO registers are used to set or reset output bits?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.6309297535714575
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7050,
+          "latency_ms": {
+            "mean": 0.12227999686729163,
+            "p95": 0.21583000489044937
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.14803499798290431,
+            "p95": 0.2701900171814487
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.025755001115612686,
+            "p95": 0.05386999691836537
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.14583500160370022,
+            "p95": 0.26933000772260135
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.02355500473640859,
+            "p95": 0.037250030436553096
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q008",
+      "question": "Which GPIO registers configure alternate functions for pins?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.06636500474996865,
+            "p95": 0.06905499321874234
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.08523500000592321,
+            "p95": 0.08835996559355411
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018869995255954564,
+            "p95": 0.019399973098188642
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.08441000245511532,
+            "p95": 0.08806502155493948
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.01804499770514667,
+            "p95": 0.019360028090886775
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q009",
+      "question": "How many GPIO pins can a port support according to the main features section?",
+      "category": "specification",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.18036500841844827,
+            "p95": 0.40443001489620695
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.22397000284399837,
+            "p95": 0.4780949850101029
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.0436049944255501,
+            "p95": 0.21721001248806715
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.21046501060482115,
+            "p95": 0.4615600308170546
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.030100002186372876,
+            "p95": 0.08672500262036924
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q010",
+      "question": "What does the GPIO functional description say about pin multiplexing?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c002"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.10757501586340368,
+            "p95": 0.11170501820743087
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.1341350085567683,
+            "p95": 0.13897503667976713
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.02655999269336462,
+            "p95": 0.02736501919571313
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.1317750138696283,
+            "p95": 0.13602002291008836
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.024199998006224632,
+            "p95": 0.024600006872788082
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q011",
+      "question": "What is the purpose of the DMA controller's AHB slave port?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.6309297535714575
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7050,
+          "latency_ms": {
+            "mean": 0.1429600059054792,
+            "p95": 0.23225500772241506
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.17441500967834145,
+            "p95": 0.28204004338476807
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.031455003772862256,
+            "p95": 0.05217003345023843
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.17164000601042062,
+            "p95": 0.2729899744736031
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.028680000104941428,
+            "p95": 0.043359966366551844
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q012",
+      "question": "Which ports are shown in the DMA controller block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.8315546295836225
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.0973699992755428,
+            "p95": 0.14719495666213334
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.11877498764079064,
+            "p95": 0.17893996264319867
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.021404988365247846,
+            "p95": 0.03174500598106534
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.11862000683322549,
+            "p95": 0.18851997738238424
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.021250007557682693,
+            "p95": 0.041325020720250905
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q013",
+      "question": "What does the SPI NSS pin do?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.0877600017702207,
+            "p95": 0.22667502053081992
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.11083500285167247,
+            "p95": 0.24991501995828008
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.023075001081451774,
+            "p95": 0.027074967510998266
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.10937499755527824,
+            "p95": 0.24774000921752307
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.021614995785057545,
+            "p95": 0.02434500202070923
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q014",
+      "question": "Which signals are shown in the SPI master-slave diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.9325210919548239
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.07816000143066049,
+            "p95": 0.08165498147718608
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09692500752862543,
+            "p95": 0.10507504048291595
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018765006097964942,
+            "p95": 0.020750035764649517
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.0954050017753616,
+            "p95": 0.09986000077333301
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.01724500034470111,
+            "p95": 0.01820501929614693
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q015",
+      "question": "Which SPI control settings are shown in the master control logic?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg_at_10": 0.5
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.13765499752480537,
+            "p95": 0.28847498178947717
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.1690450037131086,
+            "p95": 0.32504995469935244
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.03139000618830323,
+            "p95": 0.07734499813523145
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7056,
+          "latency_ms": {
+            "mean": 0.1713749923510477,
+            "p95": 0.3184150264132768
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.03371999482624233,
+            "p95": 0.08837997156661004
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q016",
+      "question": "Which signals are associated with the USART receiver and transmitter?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.6131471927654584
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 0.5,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.07847000088077039,
+            "p95": 0.08163503662217408
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0871-c002"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09670500294305384,
+            "p95": 0.10011000267695636
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018235002062283456,
+            "p95": 0.018949969671666622
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09615999879315495,
+            "p95": 0.10056495375465602
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.01768999791238457,
+            "p95": 0.019515029271133244
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q017",
+      "question": "Which registers are shown in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.38685280723454163
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 0.5,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.12509500375017524,
+            "p95": 0.3124799899524078
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.15520999440923333,
+            "p95": 0.34745996526908135
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.030114990659058094,
+            "p95": 0.052709982264786986
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.15013001102488488,
+            "p95": 0.33529998909216374
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.025035007274709642,
+            "p95": 0.03694998158607633
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q018",
+      "question": "Which USART signals are associated with hardware flow control?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg_at_10": 0.5
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 6812,
+          "latency_ms": {
+            "mean": 0.08162999583873898,
+            "p95": 0.10590501769911503
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0060-c000",
+            "stm32f4_rm0090-p0269-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.10085999965667725,
+            "p95": 0.12974002456758177
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.019230003817938268,
+            "p95": 0.02086498425342143
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.09972998814191669,
+            "p95": 0.1269200060050935
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.018099992303177714,
+            "p95": 0.021104986080899835
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q019",
+      "question": "Which USART register contains the baud-rate configuration information?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.6131471927654584
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 0.5,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.1385550043778494,
+            "p95": 0.25151498848572373
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.1737449987558648,
+            "p95": 0.2896299847634509
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.0351899943780154,
+            "p95": 0.05937997775617989
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.17575000529177487,
+            "p95": 0.293465013965033
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.03719500091392547,
+            "p95": 0.0768699799664319
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    },
+    {
+      "id": "q020",
+      "question": "What information does the SPI diagram show about the baud-rate generator and clock settings?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "bm25_retrieval_ranking": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.6509209298071326
+      },
+      "configurations": {
+        "baseline": {
+          "context_recall": 1.0,
+          "chunk_count": 10,
+          "total_chars": 7189,
+          "latency_ms": {
+            "mean": 0.1676199957728386,
+            "p95": 0.24844499130267658
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_1": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.19477999303489923,
+            "p95": 0.2740500058280305
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.027159997262060642,
+            "p95": 0.03660497895907612
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        },
+        "window_2": {
+          "context_recall": 1.0,
+          "chunk_count": 11,
+          "total_chars": 7487,
+          "latency_ms": {
+            "mean": 0.19987999694421887,
+            "p95": 0.33491497451905167
+          },
+          "expansion_overhead_ms": {
+            "mean": 0.03226000117138028,
+            "p95": 0.09067498613148929
+          },
+          "chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0963-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0060-c000"
+          ]
+        }
+      }
+    }
+  ]
+}
