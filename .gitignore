@@ -1,0 +1,50 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+
+# Testing / coverage / tooling
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Generated data and vendor documents
+data/raw/
+data/pages/
+indexes/
+
+# Keep evaluation ground truth
+!data/golden_set.json
+
+# Temporary files
+*.tmp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Microsoft Office temporary files
+~$*
+
+# Personal reference files
+text.docx

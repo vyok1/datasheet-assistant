@@ -1,0 +1,523 @@
+{
+  "run_at_utc": "2026-10-18T16:22:55.583677+00:00",
+  "retriever": "BM25Okapi",
+  "chunks_file": "data/pages/chunks.json",
+  "golden_set_file": "data/golden_set.json",
+  "summary": {
+    "question_count": 20,
+    "top_k": 10,
+    "repeats_per_question": 20,
+    "mean_recall_at_10": 0.875,
+    "mean_mrr": 0.7291666666666666,
+    "mean_ndcg_at_10": 0.7246722537336705,
+    "p95_latency_ms": 0.3522950020851568,
+    "mean_latency_ms": 0.15679849951993674
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "question": "Which registers configure an STM32 GPIO port?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q002",
+      "question": "What types of DMA transfers are supported?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q003",
+      "question": "What is the function of MISO and MOSI in SPI?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q004",
+      "question": "How does the SPI master select a slave device?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q005",
+      "question": "Which signals and registers appear in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.6131471927654584
+      }
+    },
+    {
+      "id": "q006",
+      "question": "What are the main components shown in the STM32F4 system architecture diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q007",
+      "question": "Which GPIO registers are used to set or reset output bits?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.6309297535714575
+      }
+    },
+    {
+      "id": "q008",
+      "question": "Which GPIO registers configure alternate functions for pins?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q009",
+      "question": "How many GPIO pins can a port support according to the main features section?",
+      "category": "specification",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q010",
+      "question": "What does the GPIO functional description say about pin multiplexing?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c002"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q011",
+      "question": "What is the purpose of the DMA controller's AHB slave port?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.6309297535714575
+      }
+    },
+    {
+      "id": "q012",
+      "question": "Which ports are shown in the DMA controller block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.8315546295836225
+      }
+    },
+    {
+      "id": "q013",
+      "question": "What does the SPI NSS pin do?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0963-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "id": "q014",
+      "question": "Which signals are shown in the SPI master-slave diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.16666666666666666,
+        "ndcg_at_10": 0.3562071871080222
+      }
+    },
+    {
+      "id": "q015",
+      "question": "Which SPI control settings are shown in the master control logic?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg_at_10": 0.5
+      }
+    },
+    {
+      "id": "q016",
+      "question": "Which signals are associated with the USART receiver and transmitter?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "metrics": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_10": 0.6131471927654584
+      }
+    },
+    {
+      "id": "q017",
+      "question": "Which registers are shown in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 0.5,
+        "reciprocal_rank": 0.5,
+        "ndcg_at_10": 0.38685280723454163
+      }
+    },
+    {
+      "id": "q018",
+      "question": "Which USART signals are associated with hardware flow control?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0963-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0060-c000",
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "ndcg_at_10": 0.5
+      }
+    },
+    {
+      "id": "q019",
+      "question": "Which USART register contains the baud-rate configuration information?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 0.0,
+        "reciprocal_rank": 0.0,
+        "ndcg_at_10": 0.0
+      }
+    },
+    {
+      "id": "q020",
+      "question": "What information does the SPI diagram show about the baud-rate generator and clock settings?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieved_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0871-c002",
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0269-c001",
+        "stm32f4_rm0090-p0269-c002",
+        "stm32f4_rm0090-p0269-c000",
+        "stm32f4_rm0090-p0306-c001",
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "metrics": {
+        "recall_at_10": 1.0,
+        "reciprocal_rank": 0.25,
+        "ndcg_at_10": 0.43067655807339306
+      }
+    }
+  ]
+}

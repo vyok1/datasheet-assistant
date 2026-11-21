@@ -1,0 +1,9 @@
+{
+  "stm32f4_rm0090": {
+    "title": "RM0090 STM32F405/407/427/429 Reference Manual",
+    "url": "https://st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf",
+    "sha256": "f3ff2322eec21f4e49081f68481b764506eee81dba6031bc767e2f8955b27cca",
+    "bytes": 21385881,
+    "recorded_at": "2026-10-18T07:17:32+00:00"
+  }
+}

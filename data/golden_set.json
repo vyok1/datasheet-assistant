@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "description": "Initial retrieval evaluation set for selected STM32F4 RM0090 pages",
+  "questions": [
+    {
+      "id": "q001",
+      "question": "Which registers configure an STM32 GPIO port?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "category": "register_lookup"
+    },
+    {
+      "id": "q002",
+      "question": "What types of DMA transfers are supported?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000"
+      ],
+      "category": "functional_description"
+    },
+    {
+      "id": "q003",
+      "question": "What is the function of MISO and MOSI in SPI?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000"
+      ],
+      "category": "signal_lookup"
+    },
+    {
+      "id": "q004",
+      "question": "How does the SPI master select a slave device?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "category": "functional_description"
+    },
+    {
+      "id": "q005",
+      "question": "Which signals and registers appear in the USART block diagram?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q006",
+      "question": "What are the main components shown in the STM32F4 system architecture diagram?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q007",
+      "question": "Which GPIO registers are used to set or reset output bits?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "category": "register_lookup"
+    },
+    {
+      "id": "q008",
+      "question": "Which GPIO registers configure alternate functions for pins?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "category": "register_lookup"
+    },
+    {
+      "id": "q009",
+      "question": "How many GPIO pins can a port support according to the main features section?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "category": "specification"
+    },
+    {
+      "id": "q010",
+      "question": "What does the GPIO functional description say about pin multiplexing?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c002"
+      ],
+      "category": "functional_description"
+    },
+    {
+      "id": "q011",
+      "question": "What is the purpose of the DMA controller's AHB slave port?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "category": "functional_description"
+    },
+    {
+      "id": "q012",
+      "question": "Which ports are shown in the DMA controller block diagram?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q013",
+      "question": "What does the SPI NSS pin do?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "category": "signal_lookup"
+    },
+    {
+      "id": "q014",
+      "question": "Which signals are shown in the SPI master-slave diagram?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q015",
+      "question": "Which SPI control settings are shown in the master control logic?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "category": "register_lookup"
+    },
+    {
+      "id": "q016",
+      "question": "Which signals are associated with the USART receiver and transmitter?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q017",
+      "question": "Which registers are shown in the USART block diagram?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "category": "diagram"
+    },
+    {
+      "id": "q018",
+      "question": "Which USART signals are associated with hardware flow control?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "category": "signal_lookup"
+    },
+    {
+      "id": "q019",
+      "question": "Which USART register contains the baud-rate configuration information?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "category": "register_lookup"
+    },
+    {
+      "id": "q020",
+      "question": "What information does the SPI diagram show about the baud-rate generator and clock settings?",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "category": "diagram"
+    }
+  ]
+}

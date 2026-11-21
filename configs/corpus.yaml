@@ -1,0 +1,16 @@
+# A null URL means place the PDF manually in data/raw/.
+documents:
+  - id: stm32f4_rm0090
+    title: "RM0090 STM32F405/407/427/429 Reference Manual"
+    url: "https://st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf"
+    pages: [60, 269, 306, 871, 963]
+
+  - id: esp32_datasheet
+    title: "ESP32 Datasheet"
+    url: null
+    pages: null
+
+  - id: esp32_trm
+    title: "ESP32 Technical Reference Manual"
+    url: null
+    pages: null
