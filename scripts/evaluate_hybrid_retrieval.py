@@ -152,6 +152,12 @@ def main(argv: list[str] | None = None) -> int:
         default="cpu",
         help="Device for embeddings (default: cpu)",
     )
+    parser.add_argument(
+        "--embeddings-cache",
+        type=Path,
+        default=None,
+        help="Optional .npz cache for dense chunk embeddings",
+    )
 
     args = parser.parse_args(argv)
 
@@ -182,6 +188,7 @@ def main(argv: list[str] | None = None) -> int:
         embedder=embedder,
         model_name=args.model_name,
         device=args.device,
+        embeddings_cache=args.embeddings_cache,
     )
     model_init_time_ms = (time.perf_counter() - init_start) * 1000
     print(f"Model initialized in {model_init_time_ms:.2f} ms. (Embedding dim: {dense_retriever.embedding_dim})")

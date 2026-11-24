@@ -1,0 +1,3384 @@
+{
+  "metadata": {
+    "description": "Evaluation and comparison of BM25, Dense, and Hybrid (RRF) retrieval strategies",
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "embedding_dimensions": 384,
+    "corpus_chunk_count": 5159,
+    "corpus_page_count": 1741,
+    "corpus_document_count": 1,
+    "question_count": 20,
+    "top_k": 10,
+    "rrf_k": 60,
+    "metric_definitions": {
+      "recall_at_k": "Fraction of relevant gold chunks retrieved in the top 10",
+      "mrr": "Reciprocal rank (1/rank) of the first relevant chunk retrieved",
+      "ndcg_at_k": "Normalized discounted cumulative gain at rank 10 with binary relevance",
+      "rrf_score": "Reciprocal Rank Fusion score: sum(1 / (rrf_k + rank_i)) across BM25 and Dense"
+    },
+    "corpus_limitation_note": "The indexed corpus contains 5,159 chunks across 1,741 pages and 1 document(s). Evaluation conclusions are limited to the document coverage and relevance labels in the golden set. Top-10 can include at most 10 chunks (0.19% of the indexed corpus).",
+    "timing_methodology": "Each query is warmed up before measurement. Timing is measured over repeated iterations (20 repeats) using time.perf_counter(). Dense query latency includes query embedding and cosine similarity computation, excluding one-time model initialization."
+  },
+  "aggregate_summary": {
+    "question_count": 20,
+    "top_k": 10,
+    "repeats_per_question": 20,
+    "rrf_k": 60,
+    "embedding_model": {
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "dimensions": 384,
+      "initialization_time_ms": 230446.34
+    },
+    "retrievers": {
+      "bm25": {
+        "mean_recall_at_10": 0.43333333333333335,
+        "mean_mrr": 0.2633333333333333,
+        "mean_ndcg_at_10": 0.28546223247250835,
+        "latency_ms": {
+          "mean": 27.091911499837806,
+          "p95": 37.09125999903336
+        }
+      },
+      "dense": {
+        "mean_recall_at_10": 0.475,
+        "mean_mrr": 0.37666666666666665,
+        "mean_ndcg_at_10": 0.38002030173162105,
+        "latency_ms": {
+          "mean": 20.29227325001557,
+          "p95": 24.356839997017232
+        }
+      },
+      "hybrid": {
+        "mean_recall_at_10": 0.4583333333333333,
+        "mean_mrr": 0.41,
+        "mean_ndcg_at_10": 0.39828887980885247,
+        "latency_ms": {
+          "mean": 138.50368324988267,
+          "p95": 290.48302000082913
+        }
+      }
+    },
+    "by_category": {
+      "diagram": {
+        "question_count": 7,
+        "bm25": {
+          "recall_at_10": 0.23809523809523808,
+          "mrr": 0.20238095238095238,
+          "ndcg_at_10": 0.1618994397072663
+        },
+        "dense": {
+          "recall_at_10": 0.21428571428571427,
+          "mrr": 0.2857142857142857,
+          "ndcg_at_10": 0.20738481717928067
+        },
+        "hybrid": {
+          "recall_at_10": 0.16666666666666666,
+          "mrr": 0.2857142857142857,
+          "ndcg_at_10": 0.18815218311422757
+        }
+      },
+      "functional_description": {
+        "question_count": 4,
+        "bm25": {
+          "recall_at_10": 0.75,
+          "mrr": 0.5625,
+          "ndcg_at_10": 0.6076691395183482
+        },
+        "dense": {
+          "recall_at_10": 0.75,
+          "mrr": 0.5,
+          "ndcg_at_10": 0.5654648767857288
+        },
+        "hybrid": {
+          "recall_at_10": 0.75,
+          "mrr": 0.625,
+          "ndcg_at_10": 0.6577324383928644
+        }
+      },
+      "register_lookup": {
+        "question_count": 5,
+        "bm25": {
+          "recall_at_10": 0.4,
+          "mrr": 0.05333333333333333,
+          "ndcg_at_10": 0.129054402685182
+        },
+        "dense": {
+          "recall_at_10": 0.6,
+          "mrr": 0.4666666666666667,
+          "ndcg_at_10": 0.5
+        },
+        "hybrid": {
+          "recall_at_10": 0.6,
+          "mrr": 0.34,
+          "ndcg_at_10": 0.4035565121611998
+        }
+      },
+      "signal_lookup": {
+        "question_count": 3,
+        "bm25": {
+          "recall_at_10": 0.6666666666666666,
+          "mrr": 0.4444444444444444,
+          "ndcg_at_10": 0.5
+        },
+        "dense": {
+          "recall_at_10": 0.6666666666666666,
+          "mrr": 0.4,
+          "ndcg_at_10": 0.46228426907818054
+        },
+        "hybrid": {
+          "recall_at_10": 0.6666666666666666,
+          "mrr": 0.6666666666666666,
+          "ndcg_at_10": 0.6666666666666666
+        }
+      },
+      "specification": {
+        "question_count": 1,
+        "bm25": {
+          "recall_at_10": 0.0,
+          "mrr": 0.0,
+          "ndcg_at_10": 0.0
+        },
+        "dense": {
+          "recall_at_10": 0.0,
+          "mrr": 0.0,
+          "ndcg_at_10": 0.0
+        },
+        "hybrid": {
+          "recall_at_10": 0.0,
+          "mrr": 0.0,
+          "ndcg_at_10": 0.0
+        }
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "question": "Which registers configure an STM32 GPIO port?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c000"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.1,
+            "ndcg_at_10": 0.2890648263178879
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p0270-c000",
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p0008-c003",
+            "stm32f4_rm0090-p0007-c006",
+            "stm32f4_rm0090-p0273-c000",
+            "stm32f4_rm0090-p1380-c001",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0269-c000"
+          ],
+          "latency_ms": {
+            "mean": 18.349264999415027,
+            "p95": 24.903804998029955
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0291-c000",
+            "stm32f4_rm0090-p0009-c000",
+            "stm32f4_rm0090-p0245-c000",
+            "stm32f4_rm0090-p0183-c000",
+            "stm32f4_rm0090-p1117-c002",
+            "stm32f4_rm0090-p0253-c000",
+            "stm32f4_rm0090-p0173-c000"
+          ],
+          "latency_ms": {
+            "mean": 20.32820999975229,
+            "p95": 23.644329998387548
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.5,
+            "ndcg_at_10": 0.6309297535714575
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0285-c000",
+            "stm32f4_rm0090-p0008-c003",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0286-c000",
+            "stm32f4_rm0090-p0284-c000",
+            "stm32f4_rm0090-p0276-c001"
+          ],
+          "latency_ms": {
+            "mean": 120.06535999989865,
+            "p95": 148.66096000132538
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0283-c000",
+              "rrf_score": 0.03252247488101534,
+              "bm25_rank": 1,
+              "bm25_score": 16.34969824859691,
+              "dense_rank": 2,
+              "dense_score": 0.6195610165596008
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c000",
+              "rrf_score": 0.030679156908665108,
+              "bm25_rank": 10,
+              "bm25_score": 13.526294622836119,
+              "dense_rank": 1,
+              "dense_score": 0.7119876146316528
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c000",
+              "rrf_score": 0.03036576949620428,
+              "bm25_rank": 9,
+              "bm25_score": 13.613188245163242,
+              "dense_rank": 3,
+              "dense_score": 0.6123785972595215
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0285-c000",
+              "rrf_score": 0.027783137179239824,
+              "bm25_rank": 11,
+              "bm25_score": 13.210997043436123,
+              "dense_rank": 13,
+              "dense_score": 0.5308716893196106
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c003",
+              "rrf_score": 0.027730294396961064,
+              "bm25_rank": 5,
+              "bm25_score": 14.069864823928352,
+              "dense_rank": 21,
+              "dense_score": 0.4925697147846222
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c002",
+              "rrf_score": 0.026881720430107527,
+              "bm25_rank": 2,
+              "bm25_score": 16.31531751537251,
+              "dense_rank": 33,
+              "dense_score": 0.4759608507156372
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c000",
+              "rrf_score": 0.026875901875901876,
+              "bm25_rank": 12,
+              "bm25_score": 12.661141627015821,
+              "dense_rank": 17,
+              "dense_score": 0.5079984068870544
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0286-c000",
+              "rrf_score": 0.02651914295749912,
+              "bm25_rank": 13,
+              "bm25_score": 12.468073005690965,
+              "dense_rank": 18,
+              "dense_score": 0.5061380863189697
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0284-c000",
+              "rrf_score": 0.025503573749187783,
+              "bm25_rank": 21,
+              "bm25_score": 11.58037757445312,
+              "dense_rank": 16,
+              "dense_score": 0.5084342956542969
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c001",
+              "rrf_score": 0.023669467787114845,
+              "bm25_rank": 25,
+              "bm25_score": 10.583548227067029,
+              "dense_rank": 24,
+              "dense_score": 0.490169495344162
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q002",
+      "question": "What types of DMA transfers are supported?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0462-c001",
+            "stm32f4_rm0090-p1115-c001",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p1015-c000",
+            "stm32f4_rm0090-p0849-c000",
+            "stm32f4_rm0090-p1178-c000",
+            "stm32f4_rm0090-p0467-c002",
+            "stm32f4_rm0090-p1534-c001",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0305-c002"
+          ],
+          "latency_ms": {
+            "mean": 18.45491000003676,
+            "p95": 22.29409499977919
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0311-c000",
+            "stm32f4_rm0090-p0305-c001",
+            "stm32f4_rm0090-p0324-c003",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0305-c000",
+            "stm32f4_rm0090-p0305-c002",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p0304-c002",
+            "stm32f4_rm0090-p0323-c000",
+            "stm32f4_rm0090-p0313-c002"
+          ],
+          "latency_ms": {
+            "mean": 19.131715000185068,
+            "p95": 21.31193000168423
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0305-c002",
+            "stm32f4_rm0090-p0305-c000",
+            "stm32f4_rm0090-p1115-c001",
+            "stm32f4_rm0090-p0305-c001",
+            "stm32f4_rm0090-p0311-c000",
+            "stm32f4_rm0090-p0323-c000",
+            "stm32f4_rm0090-p0321-c003",
+            "stm32f4_rm0090-p1156-c001"
+          ],
+          "latency_ms": {
+            "mean": 117.78873500006739,
+            "p95": 135.8763599984742
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0318-c000",
+              "rrf_score": 0.030798389007344232,
+              "bm25_rank": 3,
+              "bm25_score": 14.188584598565827,
+              "dense_rank": 7,
+              "dense_score": 0.6468437910079956
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0308-c000",
+              "rrf_score": 0.030117753623188408,
+              "bm25_rank": 9,
+              "bm25_score": 12.661668863774171,
+              "dense_rank": 4,
+              "dense_score": 0.684269368648529
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0305-c002",
+              "rrf_score": 0.029437229437229435,
+              "bm25_rank": 10,
+              "bm25_score": 12.400151140418256,
+              "dense_rank": 6,
+              "dense_score": 0.6637360453605652
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0305-c000",
+              "rrf_score": 0.029083245521601686,
+              "bm25_rank": 13,
+              "bm25_score": 11.968172664985383,
+              "dense_rank": 5,
+              "dense_score": 0.6740400195121765
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1115-c001",
+              "rrf_score": 0.02878726010616578,
+              "bm25_rank": 2,
+              "bm25_score": 14.549556420863617,
+              "dense_rank": 19,
+              "dense_score": 0.5922404527664185
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0305-c001",
+              "rrf_score": 0.028177225029148854,
+              "bm25_rank": 23,
+              "bm25_score": 11.30009097334296,
+              "dense_rank": 2,
+              "dense_score": 0.706464409828186
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0311-c000",
+              "rrf_score": 0.02815814850530376,
+              "bm25_rank": 25,
+              "bm25_score": 11.138813392786009,
+              "dense_rank": 1,
+              "dense_score": 0.7091429233551025
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0323-c000",
+              "rrf_score": 0.02715098147128967,
+              "bm25_rank": 19,
+              "bm25_score": 11.441924746561488,
+              "dense_rank": 9,
+              "dense_score": 0.6334823369979858
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0321-c003",
+              "rrf_score": 0.025807525807525808,
+              "bm25_rank": 17,
+              "bm25_score": 11.591017468214929,
+              "dense_rank": 18,
+              "dense_score": 0.5938595533370972
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1156-c001",
+              "rrf_score": 0.025561706284597852,
+              "bm25_rank": 14,
+              "bm25_score": 11.962425940200456,
+              "dense_rank": 23,
+              "dense_score": 0.5774195194244385
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q003",
+      "question": "What is the function of MISO and MOSI in SPI?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "ndcg_at_10": 0.5
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0879-c001",
+            "stm32f4_rm0090-p0879-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0874-c000",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0872-c002",
+            "stm32f4_rm0090-p0894-c001",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0885-c002"
+          ],
+          "latency_ms": {
+            "mean": 26.416924999466573,
+            "p95": 33.034859998952015
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.2,
+            "ndcg_at_10": 0.38685280723454163
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0880-c001",
+            "stm32f4_rm0090-p0880-c003",
+            "stm32f4_rm0090-p0891-c002",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0876-c001",
+            "stm32f4_rm0090-p0880-c002",
+            "stm32f4_rm0090-p0879-c001",
+            "stm32f4_rm0090-p0885-c002",
+            "stm32f4_rm0090-p0875-c002"
+          ],
+          "latency_ms": {
+            "mean": 21.50474000027316,
+            "p95": 23.64946499965299
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0879-c001",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0880-c003",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0885-c002",
+            "stm32f4_rm0090-p0880-c001",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0880-c002",
+            "stm32f4_rm0090-p0891-c002"
+          ],
+          "latency_ms": {
+            "mean": 153.41170499941654,
+            "p95": 305.6259200009663
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.03125763125763126,
+              "bm25_rank": 3,
+              "bm25_score": 31.572637706995607,
+              "dense_rank": 5,
+              "dense_score": 0.5677292943000793
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0879-c001",
+              "rrf_score": 0.031099324975891997,
+              "bm25_rank": 1,
+              "bm25_score": 36.933564402517575,
+              "dense_rank": 8,
+              "dense_score": 0.5259121656417847
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c000",
+              "rrf_score": 0.030776515151515152,
+              "bm25_rank": 6,
+              "bm25_score": 29.968628791336112,
+              "dense_rank": 4,
+              "dense_score": 0.5776020884513855
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0880-c003",
+              "rrf_score": 0.02928692699490662,
+              "bm25_rank": 16,
+              "bm25_score": 27.204395318674457,
+              "dense_rank": 2,
+              "dense_score": 0.5944107174873352
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0879-c000",
+              "rrf_score": 0.029273504273504274,
+              "bm25_rank": 5,
+              "bm25_score": 31.152416231364775,
+              "dense_rank": 12,
+              "dense_score": 0.5023036599159241
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0885-c002",
+              "rrf_score": 0.02877846790890269,
+              "bm25_rank": 10,
+              "bm25_score": 28.34217147603822,
+              "dense_rank": 9,
+              "dense_score": 0.5200659036636353
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0880-c001",
+              "rrf_score": 0.02844163539403516,
+              "bm25_rank": 23,
+              "bm25_score": 25.76405383670037,
+              "dense_rank": 1,
+              "dense_score": 0.6143354177474976
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c001",
+              "rrf_score": 0.02782608695652174,
+              "bm25_rank": 9,
+              "bm25_score": 28.892405689423786,
+              "dense_rank": 15,
+              "dense_score": 0.4913851022720337
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0880-c002",
+              "rrf_score": 0.027583600982429624,
+              "bm25_rank": 19,
+              "bm25_score": 26.460221308162637,
+              "dense_rank": 7,
+              "dense_score": 0.526739776134491
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0891-c002",
+              "rrf_score": 0.027500922849760058,
+              "bm25_rank": 26,
+              "bm25_score": 24.04627807746047,
+              "dense_rank": 3,
+              "dense_score": 0.5814002752304077
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q004",
+      "question": "How does the SPI master select a slave device?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0875-c001",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0891-c001",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0892-c000",
+            "stm32f4_rm0090-p0879-c001"
+          ],
+          "latency_ms": {
+            "mean": 27.291369999875315,
+            "p95": 34.42419500024699
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0868-c000",
+            "stm32f4_rm0090-p0880-c003",
+            "stm32f4_rm0090-p0873-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0875-c002",
+            "stm32f4_rm0090-p0876-c000"
+          ],
+          "latency_ms": {
+            "mean": 20.654080000713293,
+            "p95": 25.342090001322504
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0868-c000",
+            "stm32f4_rm0090-p0873-c001",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0880-c003",
+            "stm32f4_rm0090-p0891-c001"
+          ],
+          "latency_ms": {
+            "mean": 136.99263499966037,
+            "p95": 161.01700499984884
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.03252247488101534,
+              "bm25_rank": 1,
+              "bm25_score": 28.62312342707978,
+              "dense_rank": 2,
+              "dense_score": 0.7174391746520996
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c001",
+              "rrf_score": 0.03252247488101534,
+              "bm25_rank": 2,
+              "bm25_score": 26.685568347455295,
+              "dense_rank": 1,
+              "dense_score": 0.7217649221420288
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c000",
+              "rrf_score": 0.031746031746031744,
+              "bm25_rank": 3,
+              "bm25_score": 26.16331925490102,
+              "dense_rank": 3,
+              "dense_score": 0.7082265019416809
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c001",
+              "rrf_score": 0.030776515151515152,
+              "bm25_rank": 6,
+              "bm25_score": 22.29606832206631,
+              "dense_rank": 4,
+              "dense_score": 0.6382731795310974
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0868-c000",
+              "rrf_score": 0.02871794871794872,
+              "bm25_rank": 15,
+              "bm25_score": 19.51936667946207,
+              "dense_rank": 5,
+              "dense_score": 0.6289838552474976
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0873-c001",
+              "rrf_score": 0.028438886647841874,
+              "bm25_rank": 14,
+              "bm25_score": 19.636598155857364,
+              "dense_rank": 7,
+              "dense_score": 0.6240852475166321
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0895-c000",
+              "rrf_score": 0.028404512489927477,
+              "bm25_rank": 8,
+              "bm25_score": 21.278850721686965,
+              "dense_rank": 13,
+              "dense_score": 0.5509597659111023
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0875-c000",
+              "rrf_score": 0.028125,
+              "bm25_rank": 4,
+              "bm25_score": 25.63801961133829,
+              "dense_rank": 20,
+              "dense_score": 0.5390061140060425
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0880-c003",
+              "rrf_score": 0.02719970792259949,
+              "bm25_rank": 23,
+              "bm25_score": 18.352342099467606,
+              "dense_rank": 6,
+              "dense_score": 0.6281192898750305
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0891-c001",
+              "rrf_score": 0.02712049508554787,
+              "bm25_rank": 7,
+              "bm25_score": 21.489767024007335,
+              "dense_rank": 22,
+              "dense_score": 0.5315718650817871
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q005",
+      "question": "Which signals and registers appear in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1018-c001",
+            "stm32f4_rm0090-p1533-c001",
+            "stm32f4_rm0090-p1591-c001",
+            "stm32f4_rm0090-p0939-c001",
+            "stm32f4_rm0090-p0458-c001",
+            "stm32f4_rm0090-p0483-c001",
+            "stm32f4_rm0090-p0925-c000",
+            "stm32f4_rm0090-p0769-c000",
+            "stm32f4_rm0090-p1592-c000",
+            "stm32f4_rm0090-p0382-c000"
+          ],
+          "latency_ms": {
+            "mean": 30.10450999954628,
+            "p95": 42.18807499983087
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1002-c000",
+            "stm32f4_rm0090-p1013-c000",
+            "stm32f4_rm0090-p0965-c000",
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p0969-c000",
+            "stm32f4_rm0090-p1001-c001",
+            "stm32f4_rm0090-p0962-c000",
+            "stm32f4_rm0090-p0964-c000",
+            "stm32f4_rm0090-p1001-c000",
+            "stm32f4_rm0090-p1009-c001"
+          ],
+          "latency_ms": {
+            "mean": 20.755259999896225,
+            "p95": 24.587904997133595
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1001-c000",
+            "stm32f4_rm0090-p1005-c001",
+            "stm32f4_rm0090-p0991-c000",
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p0965-c000",
+            "stm32f4_rm0090-p0985-c000",
+            "stm32f4_rm0090-p0969-c000",
+            "stm32f4_rm0090-p0962-c000",
+            "stm32f4_rm0090-p0989-c000",
+            "stm32f4_rm0090-p1001-c001"
+          ],
+          "latency_ms": {
+            "mean": 134.6869749999314,
+            "p95": 147.53766999965603
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p1001-c000",
+              "rrf_score": 0.027479766610201392,
+              "bm25_rank": 17,
+              "bm25_score": 18.44992619553773,
+              "dense_rank": 9,
+              "dense_score": 0.5962579846382141
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1005-c001",
+              "rrf_score": 0.02658450704225352,
+              "bm25_rank": 20,
+              "bm25_score": 18.268521799048635,
+              "dense_rank": 11,
+              "dense_score": 0.5873809456825256
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0991-c000",
+              "rrf_score": 0.02565359477124183,
+              "bm25_rank": 12,
+              "bm25_score": 19.337414957325343,
+              "dense_rank": 25,
+              "dense_score": 0.5575039386749268
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0962-c001",
+              "rrf_score": 0.025240384615384616,
+              "bm25_rank": 44,
+              "bm25_score": 16.82133823125566,
+              "dense_rank": 4,
+              "dense_score": 0.6250011920928955
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0965-c000",
+              "rrf_score": 0.024137478682933228,
+              "bm25_rank": 61,
+              "bm25_score": 16.060369391362105,
+              "dense_rank": 3,
+              "dense_score": 0.6276805400848389
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0985-c000",
+              "rrf_score": 0.0238230289279637,
+              "bm25_rank": 26,
+              "bm25_score": 17.779082153286687,
+              "dense_rank": 22,
+              "dense_score": 0.5595602989196777
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0969-c000",
+              "rrf_score": 0.023717948717948717,
+              "bm25_rank": 60,
+              "bm25_score": 16.07921520918015,
+              "dense_rank": 5,
+              "dense_score": 0.6211764812469482
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0962-c000",
+              "rrf_score": 0.023472381681336904,
+              "bm25_rank": 57,
+              "bm25_score": 16.266611639000857,
+              "dense_rank": 7,
+              "dense_score": 0.6071745157241821
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0989-c000",
+              "rrf_score": 0.021915584415584416,
+              "bm25_rank": 52,
+              "bm25_score": 16.491021653004914,
+              "dense_rank": 17,
+              "dense_score": 0.5692300796508789
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1001-c001",
+              "rrf_score": 0.021480629075565784,
+              "bm25_rank": 98,
+              "bm25_score": 15.309418444581882,
+              "dense_rank": 6,
+              "dense_score": 0.6159055233001709
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q006",
+      "question": "What are the main components shown in the STM32F4 system architecture diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0060-c000"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1533-c000",
+            "stm32f4_rm0090-p0071-c000",
+            "stm32f4_rm0090-p0059-c000",
+            "stm32f4_rm0090-p0069-c003",
+            "stm32f4_rm0090-p1117-c001",
+            "stm32f4_rm0090-p1591-c001",
+            "stm32f4_rm0090-p0074-c000",
+            "stm32f4_rm0090-p1703-c001",
+            "stm32f4_rm0090-p0076-c000",
+            "stm32f4_rm0090-p0272-c001"
+          ],
+          "latency_ms": {
+            "mean": 34.759619999385905,
+            "p95": 41.06954499875428
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0062-c000",
+            "stm32f4_rm0090-p0291-c000",
+            "stm32f4_rm0090-p0058-c002",
+            "stm32f4_rm0090-p0009-c000",
+            "stm32f4_rm0090-p0373-c001",
+            "stm32f4_rm0090-p1154-c003",
+            "stm32f4_rm0090-p0069-c002",
+            "stm32f4_rm0090-p0061-c000",
+            "stm32f4_rm0090-p0001-c000",
+            "stm32f4_rm0090-p0047-c000"
+          ],
+          "latency_ms": {
+            "mean": 24.067839999770513,
+            "p95": 27.737134997732937
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0069-c003",
+            "stm32f4_rm0090-p0059-c000",
+            "stm32f4_rm0090-p0074-c000",
+            "stm32f4_rm0090-p0061-c000",
+            "stm32f4_rm0090-p0073-c001",
+            "stm32f4_rm0090-p0076-c000",
+            "stm32f4_rm0090-p0062-c000",
+            "stm32f4_rm0090-p0071-c000",
+            "stm32f4_rm0090-p1117-c001",
+            "stm32f4_rm0090-p1533-c000"
+          ],
+          "latency_ms": {
+            "mean": 149.35556499949598,
+            "p95": 170.071639998787
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0069-c003",
+              "rrf_score": 0.029709507042253523,
+              "bm25_rank": 4,
+              "bm25_score": 24.42418591124256,
+              "dense_rank": 11,
+              "dense_score": 0.5376353859901428
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0059-c000",
+              "rrf_score": 0.029206349206349208,
+              "bm25_rank": 3,
+              "bm25_score": 24.63080567370376,
+              "dense_rank": 15,
+              "dense_score": 0.5266752243041992
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0074-c000",
+              "rrf_score": 0.027583600982429624,
+              "bm25_rank": 7,
+              "bm25_score": 22.844910796901193,
+              "dense_rank": 19,
+              "dense_score": 0.5138804912567139
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0061-c000",
+              "rrf_score": 0.027051561365286855,
+              "bm25_rank": 21,
+              "bm25_score": 19.524566466213273,
+              "dense_rank": 8,
+              "dense_score": 0.5480183362960815
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0073-c001",
+              "rrf_score": 0.024722804914593947,
+              "bm25_rank": 11,
+              "bm25_score": 21.000809069563285,
+              "dense_rank": 34,
+              "dense_score": 0.48813700675964355
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0076-c000",
+              "rrf_score": 0.024696835255841466,
+              "bm25_rank": 9,
+              "bm25_score": 21.718660402287,
+              "dense_rank": 38,
+              "dense_score": 0.48440849781036377
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0062-c000",
+              "rrf_score": 0.02420594262295082,
+              "bm25_rank": 68,
+              "bm25_score": 16.755552723768837,
+              "dense_rank": 1,
+              "dense_score": 0.6427680850028992
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0071-c000",
+              "rrf_score": 0.02388097024256064,
+              "bm25_rank": 2,
+              "bm25_score": 25.18502058494012,
+              "dense_rank": 69,
+              "dense_score": 0.45159807801246643
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1117-c001",
+              "rrf_score": 0.023859191655801824,
+              "bm25_rank": 5,
+              "bm25_score": 23.218622476299984,
+              "dense_rank": 58,
+              "dense_score": 0.45865967869758606
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1533-c000",
+              "rrf_score": 0.02306010928961749,
+              "bm25_rank": 1,
+              "bm25_score": 25.50357104333383,
+              "dense_rank": 90,
+              "dense_score": 0.44233059883117676
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q007",
+      "question": "Which GPIO registers are used to set or reset output bits?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0276-c001",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0273-c000",
+            "stm32f4_rm0090-p0286-c000",
+            "stm32f4_rm0090-p0276-c003"
+          ],
+          "latency_ms": {
+            "mean": 29.53138500015484,
+            "p95": 35.402989997237455
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.3333333333333333,
+            "ndcg_at_10": 0.5
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0276-c001",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0286-c000",
+            "stm32f4_rm0090-p0115-c000",
+            "stm32f4_rm0090-p0114-c002",
+            "stm32f4_rm0090-p0276-c004",
+            "stm32f4_rm0090-p0115-c001",
+            "stm32f4_rm0090-p1063-c000"
+          ],
+          "latency_ms": {
+            "mean": 19.670735000181594,
+            "p95": 23.086375002276327
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.2,
+            "ndcg_at_10": 0.38685280723454163
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0276-c001",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0286-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0285-c000",
+            "stm32f4_rm0090-p0008-c003",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0276-c003"
+          ],
+          "latency_ms": {
+            "mean": 136.43913499945484,
+            "p95": 291.41332499912096
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c001",
+              "rrf_score": 0.03278688524590164,
+              "bm25_rank": 1,
+              "bm25_score": 18.643098926093266,
+              "dense_rank": 1,
+              "dense_score": 0.682491660118103
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c000",
+              "rrf_score": 0.031754032258064516,
+              "bm25_rank": 2,
+              "bm25_score": 18.29569582090342,
+              "dense_rank": 4,
+              "dense_score": 0.6106767654418945
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0283-c000",
+              "rrf_score": 0.031054405392392875,
+              "bm25_rank": 7,
+              "bm25_score": 15.575039301111909,
+              "dense_rank": 2,
+              "dense_score": 0.6798652410507202
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0286-c000",
+              "rrf_score": 0.029877369007803793,
+              "bm25_rank": 9,
+              "bm25_score": 15.465391060573177,
+              "dense_rank": 5,
+              "dense_score": 0.5997601747512817
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c001",
+              "rrf_score": 0.029386529386529386,
+              "bm25_rank": 14,
+              "bm25_score": 14.16839479739349,
+              "dense_rank": 3,
+              "dense_score": 0.648797333240509
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c000",
+              "rrf_score": 0.024695121951219513,
+              "bm25_rank": 20,
+              "bm25_score": 13.595176950918823,
+              "dense_rank": 22,
+              "dense_score": 0.5377531051635742
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0285-c000",
+              "rrf_score": 0.02325881896885903,
+              "bm25_rank": 49,
+              "bm25_score": 11.961693413961447,
+              "dense_rank": 11,
+              "dense_score": 0.5685421228408813
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c003",
+              "rrf_score": 0.02319109461966605,
+              "bm25_rank": 38,
+              "bm25_score": 12.41551190787975,
+              "dense_rank": 17,
+              "dense_score": 0.5444861650466919
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c000",
+              "rrf_score": 0.020335110434120337,
+              "bm25_rank": 5,
+              "bm25_score": 16.132363977628383,
+              "dense_rank": 142,
+              "dense_score": 0.48471641540527344
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c003",
+              "rrf_score": 0.01966205837173579,
+              "bm25_rank": 10,
+              "bm25_score": 15.351674365529144,
+              "dense_rank": 126,
+              "dense_score": 0.4866778254508972
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q008",
+      "question": "Which GPIO registers configure alternate functions for pins?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.16666666666666666,
+            "ndcg_at_10": 0.3562071871080222
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0008-c001",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p0273-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0272-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p1674-c000"
+          ],
+          "latency_ms": {
+            "mean": 24.379345000306785,
+            "p95": 29.630649998944136
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0288-c000",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0272-c000",
+            "stm32f4_rm0090-p0285-c000"
+          ],
+          "latency_ms": {
+            "mean": 20.83782500030793,
+            "p95": 24.80198500070401
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0272-c000",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0288-c000",
+            "stm32f4_rm0090-p0269-c000"
+          ],
+          "latency_ms": {
+            "mean": 133.01658000000316,
+            "p95": 139.0708700017059
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c001",
+              "rrf_score": 0.031544957774465976,
+              "bm25_rank": 6,
+              "bm25_score": 20.108766277145833,
+              "dense_rank": 1,
+              "dense_score": 0.6667734384536743
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c001",
+              "rrf_score": 0.03125763125763126,
+              "bm25_rank": 3,
+              "bm25_score": 25.8452489273121,
+              "dense_rank": 5,
+              "dense_score": 0.5813074111938477
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c000",
+              "rrf_score": 0.03036576949620428,
+              "bm25_rank": 9,
+              "bm25_score": 19.480212194275122,
+              "dense_rank": 3,
+              "dense_score": 0.596601128578186
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c002",
+              "rrf_score": 0.029631255487269532,
+              "bm25_rank": 8,
+              "bm25_score": 19.848431126752498,
+              "dense_rank": 7,
+              "dense_score": 0.5672381520271301
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0272-c000",
+              "rrf_score": 0.029418126757516764,
+              "bm25_rank": 7,
+              "bm25_score": 19.89499410018307,
+              "dense_rank": 9,
+              "dense_score": 0.5615445375442505
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0272-c001",
+              "rrf_score": 0.0293236301369863,
+              "bm25_rank": 4,
+              "bm25_score": 23.365040450360706,
+              "dense_rank": 13,
+              "dense_score": 0.507407009601593
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c002",
+              "rrf_score": 0.02878726010616578,
+              "bm25_rank": 2,
+              "bm25_score": 26.697531484164756,
+              "dense_rank": 19,
+              "dense_score": 0.4826579988002777
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0276-c000",
+              "rrf_score": 0.028474711270410194,
+              "bm25_rank": 21,
+              "bm25_score": 14.241635193821331,
+              "dense_rank": 2,
+              "dense_score": 0.6336674094200134
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0288-c000",
+              "rrf_score": 0.02738970588235294,
+              "bm25_rank": 25,
+              "bm25_score": 13.658263705837696,
+              "dense_rank": 4,
+              "dense_score": 0.5849170684814453
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c000",
+              "rrf_score": 0.027364110201042444,
+              "bm25_rank": 19,
+              "bm25_score": 14.599326460653165,
+              "dense_rank": 8,
+              "dense_score": 0.5638328194618225
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q009",
+      "question": "How many GPIO pins can a port support according to the main features section?",
+      "category": "specification",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1674-c000",
+            "stm32f4_rm0090-p1674-c001",
+            "stm32f4_rm0090-p1672-c000",
+            "stm32f4_rm0090-p1229-c000",
+            "stm32f4_rm0090-p0272-c002",
+            "stm32f4_rm0090-p0008-c001",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p0129-c001",
+            "stm32f4_rm0090-p0137-c000",
+            "stm32f4_rm0090-p1671-c000"
+          ],
+          "latency_ms": {
+            "mean": 35.06262000009883,
+            "p95": 42.97666499696789
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p1371-c002",
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0235-c001",
+            "stm32f4_rm0090-p0269-c000",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0032-c007",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p1424-c003"
+          ],
+          "latency_ms": {
+            "mean": 21.96980499975325,
+            "p95": 24.361779999344435
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p1674-c000",
+            "stm32f4_rm0090-p0008-c001",
+            "stm32f4_rm0090-p0283-c000",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0008-c002",
+            "stm32f4_rm0090-p1371-c001",
+            "stm32f4_rm0090-p0286-c000",
+            "stm32f4_rm0090-p0269-c000"
+          ],
+          "latency_ms": {
+            "mean": 148.95621499963454,
+            "p95": 155.92123499900492
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0007-c005",
+              "rrf_score": 0.02976190476190476,
+              "bm25_rank": 12,
+              "bm25_score": 21.880716094276625,
+              "dense_rank": 3,
+              "dense_score": 0.4518393874168396
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1674-c000",
+              "rrf_score": 0.02889344262295082,
+              "bm25_rank": 1,
+              "bm25_score": 30.61433497896309,
+              "dense_rank": 20,
+              "dense_score": 0.3923625946044922
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c001",
+              "rrf_score": 0.028484848484848488,
+              "bm25_rank": 6,
+              "bm25_score": 22.586234819641884,
+              "dense_rank": 15,
+              "dense_score": 0.4032127261161804
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0283-c000",
+              "rrf_score": 0.028438886647841874,
+              "bm25_rank": 14,
+              "bm25_score": 21.69070346638464,
+              "dense_rank": 7,
+              "dense_score": 0.43159914016723633
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c002",
+              "rrf_score": 0.027629397679130595,
+              "bm25_rank": 29,
+              "bm25_score": 19.96785282533905,
+              "dense_rank": 1,
+              "dense_score": 0.5334049463272095
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c000",
+              "rrf_score": 0.027529761904761904,
+              "bm25_rank": 24,
+              "bm25_score": 20.568669596420413,
+              "dense_rank": 4,
+              "dense_score": 0.44167667627334595
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0008-c002",
+              "rrf_score": 0.026973565905412694,
+              "bm25_rank": 7,
+              "bm25_score": 22.566248028052463,
+              "dense_rank": 23,
+              "dense_score": 0.3837638795375824
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1371-c001",
+              "rrf_score": 0.023799640237996404,
+              "bm25_rank": 13,
+              "bm25_score": 21.739155775111833,
+              "dense_rank": 39,
+              "dense_score": 0.36451664566993713
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0286-c000",
+              "rrf_score": 0.023529411764705882,
+              "bm25_rank": 25,
+              "bm25_score": 20.513492739444708,
+              "dense_rank": 25,
+              "dense_score": 0.3812052607536316
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c000",
+              "rrf_score": 0.02321603128054741,
+              "bm25_rank": 64,
+              "bm25_score": 17.602231589128355,
+              "dense_rank": 6,
+              "dense_score": 0.43161794543266296
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q010",
+      "question": "What does the GPIO functional description say about pin multiplexing?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0269-c002"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p1124-c001",
+            "stm32f4_rm0090-p0118-c002",
+            "stm32f4_rm0090-p0391-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0836-c001",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0269-c001"
+          ],
+          "latency_ms": {
+            "mean": 26.10628500024177,
+            "p95": 31.370489998880657
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.5,
+            "ndcg_at_10": 0.6309297535714575
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p0272-c000",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p1371-c002",
+            "stm32f4_rm0090-p0276-c000",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p1421-c001"
+          ],
+          "latency_ms": {
+            "mean": 19.52882999958092,
+            "p95": 21.846710000863826
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0269-c002",
+            "stm32f4_rm0090-p0007-c005",
+            "stm32f4_rm0090-p0272-c001",
+            "stm32f4_rm0090-p0269-c001",
+            "stm32f4_rm0090-p0277-c000",
+            "stm32f4_rm0090-p0277-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p1371-c002",
+            "stm32f4_rm0090-p0272-c000",
+            "stm32f4_rm0090-p0961-c001"
+          ],
+          "latency_ms": {
+            "mean": 134.0371749996848,
+            "p95": 139.57702499956224
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c002",
+              "rrf_score": 0.03252247488101534,
+              "bm25_rank": 1,
+              "bm25_score": 25.649360413379164,
+              "dense_rank": 2,
+              "dense_score": 0.6306713819503784
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0007-c005",
+              "rrf_score": 0.03200204813108039,
+              "bm25_rank": 2,
+              "bm25_score": 21.94266619060222,
+              "dense_rank": 3,
+              "dense_score": 0.6150456666946411
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0272-c001",
+              "rrf_score": 0.03036576949620428,
+              "bm25_rank": 3,
+              "bm25_score": 19.010148463921215,
+              "dense_rank": 9,
+              "dense_score": 0.44796812534332275
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0269-c001",
+              "rrf_score": 0.02967032967032967,
+              "bm25_rank": 10,
+              "bm25_score": 14.778944530085813,
+              "dense_rank": 5,
+              "dense_score": 0.5173473358154297
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c000",
+              "rrf_score": 0.02964426877470356,
+              "bm25_rank": 9,
+              "bm25_score": 15.32662345138083,
+              "dense_rank": 6,
+              "dense_score": 0.4898220896720886
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0277-c001",
+              "rrf_score": 0.029051670471052088,
+              "bm25_rank": 19,
+              "bm25_score": 13.988283376959068,
+              "dense_rank": 1,
+              "dense_score": 0.643539309501648
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.027583600982429624,
+              "bm25_rank": 7,
+              "bm25_score": 16.272407386983613,
+              "dense_rank": 19,
+              "dense_score": 0.41893270611763
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1371-c002",
+              "rrf_score": 0.02603648424543947,
+              "bm25_rank": 30,
+              "bm25_score": 13.244228646845357,
+              "dense_rank": 7,
+              "dense_score": 0.4576674699783325
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0272-c000",
+              "rrf_score": 0.02582908163265306,
+              "bm25_rank": 38,
+              "bm25_score": 12.981983224822912,
+              "dense_rank": 4,
+              "dense_score": 0.5319651365280151
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0961-c001",
+              "rrf_score": 0.0227214377406932,
+              "bm25_rank": 22,
+              "bm25_score": 13.84706876359991,
+              "dense_rank": 35,
+              "dense_score": 0.383381724357605
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q011",
+      "question": "What is the purpose of the DMA controller's AHB slave port?",
+      "category": "functional_description",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.25,
+            "ndcg_at_10": 0.43067655807339306
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0307-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0308-c001",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0314-c001",
+            "stm32f4_rm0090-p0317-c000",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0320-c001",
+            "stm32f4_rm0090-p0346-c000"
+          ],
+          "latency_ms": {
+            "mean": 32.392499999878055,
+            "p95": 40.18040499668132
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.5,
+            "ndcg_at_10": 0.6309297535714575
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p1459-c002",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0307-c001",
+            "stm32f4_rm0090-p0313-c000",
+            "stm32f4_rm0090-p0304-c001",
+            "stm32f4_rm0090-p1117-c000"
+          ],
+          "latency_ms": {
+            "mean": 20.989564999763388,
+            "p95": 22.94252499959839
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 0.5,
+            "ndcg_at_10": 0.6309297535714575
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0306-c001",
+            "stm32f4_rm0090-p0307-c001",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p0308-c001",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0317-c000",
+            "stm32f4_rm0090-p0311-c000",
+            "stm32f4_rm0090-p0313-c000"
+          ],
+          "latency_ms": {
+            "mean": 147.74279500015837,
+            "p95": 157.83596500023134
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0306-c000",
+              "rrf_score": 0.03252247488101534,
+              "bm25_rank": 2,
+              "bm25_score": 32.623573643150124,
+              "dense_rank": 1,
+              "dense_score": 0.7807215452194214
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0306-c001",
+              "rrf_score": 0.031754032258064516,
+              "bm25_rank": 4,
+              "bm25_score": 28.745445987106184,
+              "dense_rank": 2,
+              "dense_score": 0.7105621099472046
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0307-c001",
+              "rrf_score": 0.03131881575727918,
+              "bm25_rank": 1,
+              "bm25_score": 33.4453876100548,
+              "dense_rank": 7,
+              "dense_score": 0.5993024110794067
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0342-c002",
+              "rrf_score": 0.03057889822595705,
+              "bm25_rank": 8,
+              "bm25_score": 26.38152943923852,
+              "dense_rank": 3,
+              "dense_score": 0.6737695932388306
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0318-c000",
+              "rrf_score": 0.03055037313432836,
+              "bm25_rank": 7,
+              "bm25_score": 26.75800413932539,
+              "dense_rank": 4,
+              "dense_score": 0.6498539447784424
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0308-c001",
+              "rrf_score": 0.029206349206349208,
+              "bm25_rank": 3,
+              "bm25_score": 31.251233363721127,
+              "dense_rank": 15,
+              "dense_score": 0.5674729347229004
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0308-c000",
+              "rrf_score": 0.028665028665028666,
+              "bm25_rank": 14,
+              "bm25_score": 24.729128372171314,
+              "dense_rank": 6,
+              "dense_score": 0.6000654101371765
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0317-c000",
+              "rrf_score": 0.02749719416386083,
+              "bm25_rank": 6,
+              "bm25_score": 26.99283099142002,
+              "dense_rank": 21,
+              "dense_score": 0.5280790328979492
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0311-c000",
+              "rrf_score": 0.0273972602739726,
+              "bm25_rank": 13,
+              "bm25_score": 25.17992724871773,
+              "dense_rank": 13,
+              "dense_score": 0.5747357606887817
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0313-c000",
+              "rrf_score": 0.027364110201042444,
+              "bm25_rank": 19,
+              "bm25_score": 23.84301862800565,
+              "dense_rank": 8,
+              "dense_score": 0.5945013761520386
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q012",
+      "question": "Which ports are shown in the DMA controller block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0306-c000",
+        "stm32f4_rm0090-p0306-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.5,
+            "reciprocal_rank": 0.25,
+            "ndcg_at_10": 0.2640681225725909
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0923-c000",
+            "stm32f4_rm0090-p1533-c000",
+            "stm32f4_rm0090-p1591-c001",
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0404-c000",
+            "stm32f4_rm0090-p0481-c000",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p1533-c001",
+            "stm32f4_rm0090-p0894-c000",
+            "stm32f4_rm0090-p0310-c000"
+          ],
+          "latency_ms": {
+            "mean": 28.203470000516973,
+            "p95": 32.26797500028624
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.5,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 0.6131471927654584
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0307-c000",
+            "stm32f4_rm0090-p0324-c003",
+            "stm32f4_rm0090-p0009-c007",
+            "stm32f4_rm0090-p0308-c000",
+            "stm32f4_rm0090-p0304-c000",
+            "stm32f4_rm0090-p0307-c001",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0311-c000",
+            "stm32f4_rm0090-p0459-c000"
+          ],
+          "latency_ms": {
+            "mean": 19.980415000100038,
+            "p95": 22.79558000009274
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.5,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 0.6131471927654584
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0306-c000",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0459-c000",
+            "stm32f4_rm0090-p0310-c000",
+            "stm32f4_rm0090-p0318-c000",
+            "stm32f4_rm0090-p1533-c000",
+            "stm32f4_rm0090-p0063-c002",
+            "stm32f4_rm0090-p1591-c001",
+            "stm32f4_rm0090-p0923-c000",
+            "stm32f4_rm0090-p0063-c001"
+          ],
+          "latency_ms": {
+            "mean": 145.81817499947647,
+            "p95": 308.44661999872187
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0306-c000",
+              "rrf_score": 0.032018442622950824,
+              "bm25_rank": 4,
+              "bm25_score": 23.552437701623383,
+              "dense_rank": 1,
+              "dense_score": 0.6696732044219971
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0342-c002",
+              "rrf_score": 0.029631255487269532,
+              "bm25_rank": 7,
+              "bm25_score": 21.20436124157522,
+              "dense_rank": 8,
+              "dense_score": 0.5560050010681152
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0459-c000",
+              "rrf_score": 0.02817460317460317,
+              "bm25_rank": 12,
+              "bm25_score": 18.883400248603337,
+              "dense_rank": 10,
+              "dense_score": 0.5430482625961304
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0310-c000",
+              "rrf_score": 0.026050420168067225,
+              "bm25_rank": 10,
+              "bm25_score": 19.630531919987074,
+              "dense_rank": 25,
+              "dense_score": 0.5070423483848572
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0318-c000",
+              "rrf_score": 0.025833333333333333,
+              "bm25_rank": 15,
+              "bm25_score": 18.337086498750278,
+              "dense_rank": 20,
+              "dense_score": 0.5253888964653015
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1533-c000",
+              "rrf_score": 0.02547482665058788,
+              "bm25_rank": 2,
+              "bm25_score": 25.000644544496485,
+              "dense_rank": 47,
+              "dense_score": 0.48489707708358765
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0063-c002",
+              "rrf_score": 0.02368937482478273,
+              "bm25_rank": 22,
+              "bm25_score": 17.23501294970105,
+              "dense_rank": 27,
+              "dense_score": 0.5062860250473022
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1591-c001",
+              "rrf_score": 0.02306726047733242,
+              "bm25_rank": 3,
+              "bm25_score": 24.410762036088496,
+              "dense_rank": 79,
+              "dense_score": 0.44218793511390686
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0923-c000",
+              "rrf_score": 0.022604622747174424,
+              "bm25_rank": 1,
+              "bm25_score": 25.33703694164429,
+              "dense_rank": 101,
+              "dense_score": 0.42824673652648926
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0063-c001",
+              "rrf_score": 0.02216690374585111,
+              "bm25_rank": 51,
+              "bm25_score": 15.04358622062965,
+              "dense_rank": 16,
+              "dense_score": 0.5307954549789429
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q013",
+      "question": "What does the SPI NSS pin do?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0891-c001",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0872-c002",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0887-c003",
+            "stm32f4_rm0090-p0887-c002",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0877-c000"
+          ],
+          "latency_ms": {
+            "mean": 20.371774999875925,
+            "p95": 25.566344998878776
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0875-c002",
+            "stm32f4_rm0090-p0872-c002",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0876-c000",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0878-c002"
+          ],
+          "latency_ms": {
+            "mean": 19.041030000335013,
+            "p95": 21.655815000849543
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 1.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0872-c002",
+            "stm32f4_rm0090-p0872-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0875-c002",
+            "stm32f4_rm0090-p0879-c002",
+            "stm32f4_rm0090-p0892-c002"
+          ],
+          "latency_ms": {
+            "mean": 127.05149500015978,
+            "p95": 136.33791999927791
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c001",
+              "rrf_score": 0.03278688524590164,
+              "bm25_rank": 1,
+              "bm25_score": 24.036181605470315,
+              "dense_rank": 1,
+              "dense_score": 0.7076655626296997
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c000",
+              "rrf_score": 0.03125763125763126,
+              "bm25_rank": 5,
+              "bm25_score": 21.21802158909913,
+              "dense_rank": 3,
+              "dense_score": 0.6074591875076294
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c002",
+              "rrf_score": 0.031009615384615385,
+              "bm25_rank": 4,
+              "bm25_score": 21.94090814596628,
+              "dense_rank": 5,
+              "dense_score": 0.5721808671951294
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c001",
+              "rrf_score": 0.030798389007344232,
+              "bm25_rank": 3,
+              "bm25_score": 21.954200161100598,
+              "dense_rank": 7,
+              "dense_score": 0.558318018913269
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.030621785881252923,
+              "bm25_rank": 9,
+              "bm25_score": 20.936900365030183,
+              "dense_rank": 2,
+              "dense_score": 0.6765998601913452
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0878-c001",
+              "rrf_score": 0.029857397504456328,
+              "bm25_rank": 8,
+              "bm25_score": 21.044676847486606,
+              "dense_rank": 6,
+              "dense_score": 0.5701820850372314
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0895-c000",
+              "rrf_score": 0.02819138376017471,
+              "bm25_rank": 13,
+              "bm25_score": 19.446225805921603,
+              "dense_rank": 9,
+              "dense_score": 0.5429904460906982
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0875-c002",
+              "rrf_score": 0.02797067901234568,
+              "bm25_rank": 21,
+              "bm25_score": 17.07024104562131,
+              "dense_rank": 4,
+              "dense_score": 0.5865556597709656
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0879-c002",
+              "rrf_score": 0.027242401779095628,
+              "bm25_rank": 16,
+              "bm25_score": 18.2126084586273,
+              "dense_rank": 11,
+              "dense_score": 0.5332142114639282
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0892-c002",
+              "rrf_score": 0.026875901875901876,
+              "bm25_rank": 12,
+              "bm25_score": 19.866726980459497,
+              "dense_rank": 17,
+              "dense_score": 0.512199878692627
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q014",
+      "question": "Which signals are shown in the SPI master-slave diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c000",
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.6666666666666666,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 0.6508205185601091
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p1533-c001",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0873-c000",
+            "stm32f4_rm0090-p0879-c001",
+            "stm32f4_rm0090-p0887-c003",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0902-c000"
+          ],
+          "latency_ms": {
+            "mean": 26.634399999602465,
+            "p95": 32.44606500174996
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 1.0,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 0.8385465274895063
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0878-c002",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0873-c001",
+            "stm32f4_rm0090-p0871-c002",
+            "stm32f4_rm0090-p0880-c003",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0869-c000"
+          ],
+          "latency_ms": {
+            "mean": 19.619214999329415,
+            "p95": 22.600195000632084
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.6666666666666666,
+            "reciprocal_rank": 1.0,
+            "ndcg_at_10": 0.7039180890341347
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0873-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0894-c000",
+            "stm32f4_rm0090-p0026-c001",
+            "stm32f4_rm0090-p0873-c001",
+            "stm32f4_rm0090-p0895-c000"
+          ],
+          "latency_ms": {
+            "mean": 139.09454000058759,
+            "p95": 147.66094999904467
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.03278688524590164,
+              "bm25_rank": 1,
+              "bm25_score": 33.62461012857114,
+              "dense_rank": 1,
+              "dense_score": 0.7116848826408386
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c000",
+              "rrf_score": 0.031754032258064516,
+              "bm25_rank": 4,
+              "bm25_score": 24.520664149723657,
+              "dense_rank": 2,
+              "dense_score": 0.6521966457366943
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c001",
+              "rrf_score": 0.031009615384615385,
+              "bm25_rank": 5,
+              "bm25_score": 23.72805755889813,
+              "dense_rank": 4,
+              "dense_score": 0.6267681121826172
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0873-c000",
+              "rrf_score": 0.02904040404040404,
+              "bm25_rank": 6,
+              "bm25_score": 23.211107853116026,
+              "dense_rank": 12,
+              "dense_score": 0.5751215219497681
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0878-c001",
+              "rrf_score": 0.028985507246376812,
+              "bm25_rank": 9,
+              "bm25_score": 22.506087841196443,
+              "dense_rank": 9,
+              "dense_score": 0.5886847972869873
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0875-c000",
+              "rrf_score": 0.02821869488536155,
+              "bm25_rank": 3,
+              "bm25_score": 24.86664125321287,
+              "dense_rank": 21,
+              "dense_score": 0.5366641879081726
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0894-c000",
+              "rrf_score": 0.0273972602739726,
+              "bm25_rank": 13,
+              "bm25_score": 21.98018315926049,
+              "dense_rank": 13,
+              "dense_score": 0.5712759494781494
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0026-c001",
+              "rrf_score": 0.02667140825035562,
+              "bm25_rank": 16,
+              "bm25_score": 21.43529297673035,
+              "dense_rank": 14,
+              "dense_score": 0.5708057880401611
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0873-c001",
+              "rrf_score": 0.02662057044079516,
+              "bm25_rank": 29,
+              "bm25_score": 19.997187545661617,
+              "dense_rank": 5,
+              "dense_score": 0.6221221685409546
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0895-c000",
+              "rrf_score": 0.026334026334026334,
+              "bm25_rank": 14,
+              "bm25_score": 21.899214893535852,
+              "dense_rank": 18,
+              "dense_score": 0.5442110300064087
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q015",
+      "question": "Which SPI control settings are shown in the master control logic?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0894-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0562-c001",
+            "stm32f4_rm0090-p1205-c000",
+            "stm32f4_rm0090-p0700-c001",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0912-c001"
+          ],
+          "latency_ms": {
+            "mean": 29.13438999967184,
+            "p95": 35.628089999227086
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0878-c002",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0917-c002",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0869-c000",
+            "stm32f4_rm0090-p0868-c000",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0026-c006"
+          ],
+          "latency_ms": {
+            "mean": 20.025804999932006,
+            "p95": 23.027499997988343
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0872-c000",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0895-c000",
+            "stm32f4_rm0090-p0026-c001",
+            "stm32f4_rm0090-p0868-c000",
+            "stm32f4_rm0090-p0912-c001",
+            "stm32f4_rm0090-p0917-c002"
+          ],
+          "latency_ms": {
+            "mean": 141.8055000001914,
+            "p95": 152.22626999893703
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c001",
+              "rrf_score": 0.032266458495966696,
+              "bm25_rank": 1,
+              "bm25_score": 25.752215270878843,
+              "dense_rank": 3,
+              "dense_score": 0.5822838544845581
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.03200204813108039,
+              "bm25_rank": 3,
+              "bm25_score": 23.518968349349194,
+              "dense_rank": 2,
+              "dense_score": 0.6068480014801025
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0878-c001",
+              "rrf_score": 0.030776515151515152,
+              "bm25_rank": 4,
+              "bm25_score": 22.506087841196443,
+              "dense_rank": 6,
+              "dense_score": 0.5454309582710266
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0872-c000",
+              "rrf_score": 0.02819138376017471,
+              "bm25_rank": 13,
+              "bm25_score": 18.943031019722024,
+              "dense_rank": 9,
+              "dense_score": 0.5367259979248047
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0879-c000",
+              "rrf_score": 0.027119252873563218,
+              "bm25_rank": 27,
+              "bm25_score": 17.17826544848424,
+              "dense_rank": 4,
+              "dense_score": 0.5550222992897034
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0895-c000",
+              "rrf_score": 0.02662057044079516,
+              "bm25_rank": 5,
+              "bm25_score": 21.368702461558282,
+              "dense_rank": 29,
+              "dense_score": 0.46990537643432617
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0026-c001",
+              "rrf_score": 0.02638888888888889,
+              "bm25_rank": 20,
+              "bm25_score": 17.586472182809395,
+              "dense_rank": 12,
+              "dense_score": 0.5274441242218018
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0868-c000",
+              "rrf_score": 0.02594183740912095,
+              "bm25_rank": 29,
+              "bm25_score": 16.991386272751246,
+              "dense_rank": 8,
+              "dense_score": 0.5390948057174683
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0912-c001",
+              "rrf_score": 0.025779967159277502,
+              "bm25_rank": 10,
+              "bm25_score": 19.29680140504784,
+              "dense_rank": 27,
+              "dense_score": 0.47255122661590576
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0917-c002",
+              "rrf_score": 0.025693893735130847,
+              "bm25_rank": 37,
+              "bm25_score": 16.543896981899668,
+              "dense_rank": 5,
+              "dense_score": 0.5540990233421326
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q016",
+      "question": "Which signals are associated with the USART receiver and transmitter?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0983-c000",
+            "stm32f4_rm0090-p0990-c000",
+            "stm32f4_rm0090-p0985-c000",
+            "stm32f4_rm0090-p0960-c001",
+            "stm32f4_rm0090-p0998-c000",
+            "stm32f4_rm0090-p0965-c000",
+            "stm32f4_rm0090-p0993-c002",
+            "stm32f4_rm0090-p0960-c000",
+            "stm32f4_rm0090-p0989-c000",
+            "stm32f4_rm0090-p1007-c000"
+          ],
+          "latency_ms": {
+            "mean": 25.67799999997078,
+            "p95": 31.16053999819997
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0960-c000",
+            "stm32f4_rm0090-p0972-c000",
+            "stm32f4_rm0090-p0988-c000",
+            "stm32f4_rm0090-p0028-c002",
+            "stm32f4_rm0090-p0964-c000",
+            "stm32f4_rm0090-p1007-c000",
+            "stm32f4_rm0090-p0960-c001",
+            "stm32f4_rm0090-p1002-c000",
+            "stm32f4_rm0090-p0969-c000",
+            "stm32f4_rm0090-p0965-c000"
+          ],
+          "latency_ms": {
+            "mean": 18.663985000239336,
+            "p95": 20.493334999082435
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0960-c000",
+            "stm32f4_rm0090-p0960-c001",
+            "stm32f4_rm0090-p0965-c000",
+            "stm32f4_rm0090-p1007-c000",
+            "stm32f4_rm0090-p0985-c000",
+            "stm32f4_rm0090-p0964-c000",
+            "stm32f4_rm0090-p0969-c000",
+            "stm32f4_rm0090-p0990-c000",
+            "stm32f4_rm0090-p0998-c000",
+            "stm32f4_rm0090-p1001-c000"
+          ],
+          "latency_ms": {
+            "mean": 149.02572499941016,
+            "p95": 291.7007599984572
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0960-c000",
+              "rrf_score": 0.031099324975891997,
+              "bm25_rank": 8,
+              "bm25_score": 22.338470593592604,
+              "dense_rank": 1,
+              "dense_score": 0.7030453681945801
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0960-c001",
+              "rrf_score": 0.03055037313432836,
+              "bm25_rank": 4,
+              "bm25_score": 24.063101506610888,
+              "dense_rank": 7,
+              "dense_score": 0.6466274261474609
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0965-c000",
+              "rrf_score": 0.029437229437229435,
+              "bm25_rank": 6,
+              "bm25_score": 23.1769625511503,
+              "dense_rank": 10,
+              "dense_score": 0.6245076656341553
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1007-c000",
+              "rrf_score": 0.029437229437229435,
+              "bm25_rank": 10,
+              "bm25_score": 21.666569580720406,
+              "dense_rank": 6,
+              "dense_score": 0.6505979299545288
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0985-c000",
+              "rrf_score": 0.029206349206349208,
+              "bm25_rank": 3,
+              "bm25_score": 25.2168581219184,
+              "dense_rank": 15,
+              "dense_score": 0.6019572019577026
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0964-c000",
+              "rrf_score": 0.02871794871794872,
+              "bm25_rank": 15,
+              "bm25_score": 20.985749258470833,
+              "dense_rank": 5,
+              "dense_score": 0.6537598371505737
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0969-c000",
+              "rrf_score": 0.028006267136701922,
+              "bm25_rank": 14,
+              "bm25_score": 21.18987330407398,
+              "dense_rank": 9,
+              "dense_score": 0.6270991563796997
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0990-c000",
+              "rrf_score": 0.026767330130404943,
+              "bm25_rank": 2,
+              "bm25_score": 25.807059079809378,
+              "dense_rank": 34,
+              "dense_score": 0.5551119446754456
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0998-c000",
+              "rrf_score": 0.02662057044079516,
+              "bm25_rank": 5,
+              "bm25_score": 23.246484359169425,
+              "dense_rank": 29,
+              "dense_score": 0.5594937205314636
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1001-c000",
+              "rrf_score": 0.026500526500526502,
+              "bm25_rank": 17,
+              "bm25_score": 20.54522924203328,
+              "dense_rank": 14,
+              "dense_score": 0.6067511439323425
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q017",
+      "question": "Which registers are shown in the USART block diagram?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1591-c001",
+            "stm32f4_rm0090-p1533-c000",
+            "stm32f4_rm0090-p0923-c000",
+            "stm32f4_rm0090-p0481-c000",
+            "stm32f4_rm0090-p0404-c000",
+            "stm32f4_rm0090-p0894-c000",
+            "stm32f4_rm0090-p1533-c001",
+            "stm32f4_rm0090-p0342-c002",
+            "stm32f4_rm0090-p0837-c000",
+            "stm32f4_rm0090-p0871-c000"
+          ],
+          "latency_ms": {
+            "mean": 25.223469999946246,
+            "p95": 31.89156500102399
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1002-c000",
+            "stm32f4_rm0090-p1013-c000",
+            "stm32f4_rm0090-p0066-c001",
+            "stm32f4_rm0090-p0067-c000",
+            "stm32f4_rm0090-p0028-c007",
+            "stm32f4_rm0090-p1002-c001",
+            "stm32f4_rm0090-p1005-c001",
+            "stm32f4_rm0090-p1005-c000",
+            "stm32f4_rm0090-p0065-c000",
+            "stm32f4_rm0090-p1009-c001"
+          ],
+          "latency_ms": {
+            "mean": 19.169034999868018,
+            "p95": 21.447875000012573
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1533-c000",
+            "stm32f4_rm0090-p1005-c001",
+            "stm32f4_rm0090-p1002-c000",
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p1001-c000",
+            "stm32f4_rm0090-p0965-c000",
+            "stm32f4_rm0090-p0969-c000",
+            "stm32f4_rm0090-p0985-c000",
+            "stm32f4_rm0090-p0989-c000",
+            "stm32f4_rm0090-p1001-c001"
+          ],
+          "latency_ms": {
+            "mean": 130.56358499998169,
+            "p95": 147.37017499865044
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p1533-c000",
+              "rrf_score": 0.026438310608579978,
+              "bm25_rank": 2,
+              "bm25_score": 24.3095823816362,
+              "dense_rank": 37,
+              "dense_score": 0.5150253176689148
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1005-c001",
+              "rrf_score": 0.02628900949796472,
+              "bm25_rank": 28,
+              "bm25_score": 15.419980970146613,
+              "dense_rank": 7,
+              "dense_score": 0.5748217105865479
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1002-c000",
+              "rrf_score": 0.026008827238335436,
+              "bm25_rank": 44,
+              "bm25_score": 14.644925807130384,
+              "dense_rank": 1,
+              "dense_score": 0.6516002416610718
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0962-c001",
+              "rrf_score": 0.02441520467836257,
+              "bm25_rank": 35,
+              "bm25_score": 15.041159089984083,
+              "dense_rank": 12,
+              "dense_score": 0.5568341016769409
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1001-c000",
+              "rrf_score": 0.02420289855072464,
+              "bm25_rank": 15,
+              "bm25_score": 17.307450944459934,
+              "dense_rank": 32,
+              "dense_score": 0.5220197439193726
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0965-c000",
+              "rrf_score": 0.02309351605126253,
+              "bm25_rank": 51,
+              "bm25_score": 14.337084511467786,
+              "dense_rank": 11,
+              "dense_score": 0.5594810843467712
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0969-c000",
+              "rrf_score": 0.02074074074074074,
+              "bm25_rank": 75,
+              "bm25_score": 13.711789730758946,
+              "dense_rank": 15,
+              "dense_score": 0.5509941577911377
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0985-c000",
+              "rrf_score": 0.020620581304006284,
+              "bm25_rank": 16,
+              "bm25_score": 17.118292541702303,
+              "dense_rank": 74,
+              "dense_score": 0.49886447191238403
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0989-c000",
+              "rrf_score": 0.020539287971350326,
+              "bm25_rank": 34,
+              "bm25_score": 15.07731873994253,
+              "dense_rank": 41,
+              "dense_score": 0.5115343332290649
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1001-c001",
+              "rrf_score": 0.020300751879699246,
+              "bm25_rank": 80,
+              "bm25_score": 13.462131501977009,
+              "dense_rank": 16,
+              "dense_score": 0.5498628616333008
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q018",
+      "question": "Which USART signals are associated with hardware flow control?",
+      "category": "signal_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0028-c005",
+            "stm32f4_rm0090-p0053-c003",
+            "stm32f4_rm0090-p0998-c002",
+            "stm32f4_rm0090-p0999-c000",
+            "stm32f4_rm0090-p0998-c001",
+            "stm32f4_rm0090-p0963-c000",
+            "stm32f4_rm0090-p0458-c001",
+            "stm32f4_rm0090-p1010-c000",
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p1002-c001"
+          ],
+          "latency_ms": {
+            "mean": 22.385734999988927,
+            "p95": 28.838309999082412
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p0999-c000",
+            "stm32f4_rm0090-p0998-c002",
+            "stm32f4_rm0090-p0028-c005",
+            "stm32f4_rm0090-p1000-c000",
+            "stm32f4_rm0090-p0962-c000",
+            "stm32f4_rm0090-p0984-c000",
+            "stm32f4_rm0090-p1001-c001",
+            "stm32f4_rm0090-p0996-c002",
+            "stm32f4_rm0090-p0992-c000"
+          ],
+          "latency_ms": {
+            "mean": 18.51274500040745,
+            "p95": 20.049675001064315
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0028-c005",
+            "stm32f4_rm0090-p0999-c000",
+            "stm32f4_rm0090-p0998-c002",
+            "stm32f4_rm0090-p0962-c001",
+            "stm32f4_rm0090-p0998-c001",
+            "stm32f4_rm0090-p1000-c000",
+            "stm32f4_rm0090-p1002-c001",
+            "stm32f4_rm0090-p0985-c000",
+            "stm32f4_rm0090-p0992-c000",
+            "stm32f4_rm0090-p1010-c000"
+          ],
+          "latency_ms": {
+            "mean": 133.25315500005672,
+            "p95": 144.0820249985337
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0028-c005",
+              "rrf_score": 0.032018442622950824,
+              "bm25_rank": 1,
+              "bm25_score": 19.158588883482587,
+              "dense_rank": 4,
+              "dense_score": 0.6133132576942444
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0999-c000",
+              "rrf_score": 0.031754032258064516,
+              "bm25_rank": 4,
+              "bm25_score": 16.57030312092214,
+              "dense_rank": 2,
+              "dense_score": 0.6205083727836609
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0998-c002",
+              "rrf_score": 0.031746031746031744,
+              "bm25_rank": 3,
+              "bm25_score": 17.77481241557103,
+              "dense_rank": 3,
+              "dense_score": 0.6173875331878662
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0962-c001",
+              "rrf_score": 0.030886196246139225,
+              "bm25_rank": 9,
+              "bm25_score": 13.550816919369998,
+              "dense_rank": 1,
+              "dense_score": 0.6338434219360352
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0998-c001",
+              "rrf_score": 0.02871794871794872,
+              "bm25_rank": 5,
+              "bm25_score": 16.44173580038119,
+              "dense_rank": 15,
+              "dense_score": 0.5819736123085022
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1000-c000",
+              "rrf_score": 0.028371628371628373,
+              "bm25_rank": 17,
+              "bm25_score": 12.214497382391952,
+              "dense_rank": 5,
+              "dense_score": 0.612174391746521
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1002-c001",
+              "rrf_score": 0.024186704384724186,
+              "bm25_rank": 10,
+              "bm25_score": 13.542603339797404,
+              "dense_rank": 41,
+              "dense_score": 0.5437164306640625
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0985-c000",
+              "rrf_score": 0.022856436866814926,
+              "bm25_rank": 11,
+              "bm25_score": 13.463413190419939,
+              "dense_rank": 54,
+              "dense_score": 0.5242511630058289
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0992-c000",
+              "rrf_score": 0.022482435597189696,
+              "bm25_rank": 62,
+              "bm25_score": 9.084316556436237,
+              "dense_rank": 10,
+              "dense_score": 0.5978235006332397
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1010-c000",
+              "rrf_score": 0.02239819004524887,
+              "bm25_rank": 8,
+              "bm25_score": 14.636072663931738,
+              "dense_rank": 70,
+              "dense_score": 0.508247435092926
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q019",
+      "question": "Which USART register contains the baud-rate configuration information?",
+      "category": "register_lookup",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0963-c000",
+        "stm32f4_rm0090-p0963-c001"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0976-c000",
+            "stm32f4_rm0090-p0978-c000",
+            "stm32f4_rm0090-p0983-c003",
+            "stm32f4_rm0090-p0876-c001",
+            "stm32f4_rm0090-p0977-c001",
+            "stm32f4_rm0090-p0975-c000",
+            "stm32f4_rm0090-p0982-c001",
+            "stm32f4_rm0090-p0979-c002",
+            "stm32f4_rm0090-p0980-c002",
+            "stm32f4_rm0090-p0962-c000"
+          ],
+          "latency_ms": {
+            "mean": 25.511424999058363,
+            "p95": 30.010540002331254
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p1005-c000",
+            "stm32f4_rm0090-p1002-c000",
+            "stm32f4_rm0090-p0962-c000",
+            "stm32f4_rm0090-p0983-c003",
+            "stm32f4_rm0090-p0973-c002",
+            "stm32f4_rm0090-p0028-c006",
+            "stm32f4_rm0090-p0982-c000",
+            "stm32f4_rm0090-p0981-c000",
+            "stm32f4_rm0090-p0978-c000",
+            "stm32f4_rm0090-p0973-c003"
+          ],
+          "latency_ms": {
+            "mean": 19.45933500010142,
+            "p95": 21.675720000894216
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0983-c003",
+            "stm32f4_rm0090-p0978-c000",
+            "stm32f4_rm0090-p0976-c000",
+            "stm32f4_rm0090-p0962-c000",
+            "stm32f4_rm0090-p1005-c000",
+            "stm32f4_rm0090-p0973-c002",
+            "stm32f4_rm0090-p0982-c001",
+            "stm32f4_rm0090-p0028-c006",
+            "stm32f4_rm0090-p0981-c001",
+            "stm32f4_rm0090-p0964-c000"
+          ],
+          "latency_ms": {
+            "mean": 136.01042500031326,
+            "p95": 148.4760750001443
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0983-c003",
+              "rrf_score": 0.03149801587301587,
+              "bm25_rank": 3,
+              "bm25_score": 26.423069452633666,
+              "dense_rank": 4,
+              "dense_score": 0.6744487881660461
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0978-c000",
+              "rrf_score": 0.030621785881252923,
+              "bm25_rank": 2,
+              "bm25_score": 26.49943901401759,
+              "dense_rank": 9,
+              "dense_score": 0.631780743598938
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0976-c000",
+              "rrf_score": 0.03028233151183971,
+              "bm25_rank": 1,
+              "bm25_score": 26.561260043501743,
+              "dense_rank": 12,
+              "dense_score": 0.618720531463623
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0962-c000",
+              "rrf_score": 0.030158730158730156,
+              "bm25_rank": 10,
+              "bm25_score": 23.297690908339582,
+              "dense_rank": 3,
+              "dense_score": 0.6825985908508301
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p1005-c000",
+              "rrf_score": 0.029551337359792925,
+              "bm25_rank": 16,
+              "bm25_score": 23.00855755005018,
+              "dense_rank": 1,
+              "dense_score": 0.7098997831344604
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0973-c002",
+              "rrf_score": 0.029273504273504274,
+              "bm25_rank": 12,
+              "bm25_score": 23.22827718816619,
+              "dense_rank": 5,
+              "dense_score": 0.662850558757782
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0982-c001",
+              "rrf_score": 0.028258706467661692,
+              "bm25_rank": 7,
+              "bm25_score": 23.616598473543238,
+              "dense_rank": 15,
+              "dense_score": 0.6076300740242004
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0028-c006",
+              "rrf_score": 0.027056277056277056,
+              "bm25_rank": 24,
+              "bm25_score": 20.364679624373895,
+              "dense_rank": 6,
+              "dense_score": 0.6596282720565796
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0981-c001",
+              "rrf_score": 0.02690501986276634,
+              "bm25_rank": 11,
+              "bm25_score": 23.25212486728803,
+              "dense_rank": 18,
+              "dense_score": 0.5962425470352173
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0964-c000",
+              "rrf_score": 0.025833333333333333,
+              "bm25_rank": 15,
+              "bm25_score": 23.147828352843845,
+              "dense_rank": 20,
+              "dense_score": 0.5898308753967285
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "q020",
+      "question": "What information does the SPI diagram show about the baud-rate generator and clock settings?",
+      "category": "diagram",
+      "relevant_chunk_ids": [
+        "stm32f4_rm0090-p0871-c001",
+        "stm32f4_rm0090-p0871-c002"
+      ],
+      "retrieval": {
+        "bm25": {
+          "metrics": {
+            "recall_at_10": 0.5,
+            "reciprocal_rank": 0.16666666666666666,
+            "ndcg_at_10": 0.21840743681816419
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0894-c001",
+            "stm32f4_rm0090-p0876-c001",
+            "stm32f4_rm0090-p0960-c002",
+            "stm32f4_rm0090-p0973-c002",
+            "stm32f4_rm0090-p0905-c000",
+            "stm32f4_rm0090-p0871-c001",
+            "stm32f4_rm0090-p0983-c002",
+            "stm32f4_rm0090-p0982-c001",
+            "stm32f4_rm0090-p0980-c001",
+            "stm32f4_rm0090-p0981-c001"
+          ],
+          "latency_ms": {
+            "mean": 35.846829999718466,
+            "p95": 44.02888499735127
+          }
+        },
+        "dense": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0873-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0879-c000",
+            "stm32f4_rm0090-p0876-c000",
+            "stm32f4_rm0090-p0877-c000",
+            "stm32f4_rm0090-p0876-c001",
+            "stm32f4_rm0090-p0895-c001",
+            "stm32f4_rm0090-p0900-c000",
+            "stm32f4_rm0090-p0874-c000",
+            "stm32f4_rm0090-p0804-c004"
+          ],
+          "latency_ms": {
+            "mean": 21.935294999821053,
+            "p95": 23.510699999133067
+          }
+        },
+        "hybrid": {
+          "metrics": {
+            "recall_at_10": 0.0,
+            "reciprocal_rank": 0.0,
+            "ndcg_at_10": 0.0
+          },
+          "retrieved_chunk_ids": [
+            "stm32f4_rm0090-p0876-c001",
+            "stm32f4_rm0090-p0877-c000",
+            "stm32f4_rm0090-p0873-c000",
+            "stm32f4_rm0090-p0875-c000",
+            "stm32f4_rm0090-p0871-c000",
+            "stm32f4_rm0090-p0895-c001",
+            "stm32f4_rm0090-p0905-c000",
+            "stm32f4_rm0090-p0878-c001",
+            "stm32f4_rm0090-p0973-c002",
+            "stm32f4_rm0090-p0982-c001"
+          ],
+          "latency_ms": {
+            "mean": 154.95819000007032,
+            "p95": 166.05246999897656
+          },
+          "fused_debug": [
+            {
+              "chunk_id": "stm32f4_rm0090-p0876-c001",
+              "rrf_score": 0.03128054740957967,
+              "bm25_rank": 2,
+              "bm25_score": 30.885877471020173,
+              "dense_rank": 6,
+              "dense_score": 0.5588878989219666
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0877-c000",
+              "rrf_score": 0.02854251012145749,
+              "bm25_rank": 16,
+              "bm25_score": 24.477216675000438,
+              "dense_rank": 5,
+              "dense_score": 0.5649924278259277
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0873-c000",
+              "rrf_score": 0.028021349599695006,
+              "bm25_rank": 26,
+              "bm25_score": 23.377699888088035,
+              "dense_rank": 1,
+              "dense_score": 0.6103296875953674
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0875-c000",
+              "rrf_score": 0.027402402402402402,
+              "bm25_rank": 14,
+              "bm25_score": 24.821204066738936,
+              "dense_rank": 12,
+              "dense_score": 0.5484323501586914
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0871-c000",
+              "rrf_score": 0.02699859747545582,
+              "bm25_rank": 32,
+              "bm25_score": 22.614641330388373,
+              "dense_rank": 2,
+              "dense_score": 0.5995733737945557
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0895-c001",
+              "rrf_score": 0.026419626007891578,
+              "bm25_rank": 27,
+              "bm25_score": 23.28528949653777,
+              "dense_rank": 7,
+              "dense_score": 0.5546047687530518
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0905-c000",
+              "rrf_score": 0.02528560548362529,
+              "bm25_rank": 5,
+              "bm25_score": 27.96841329619733,
+              "dense_rank": 41,
+              "dense_score": 0.4834732413291931
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0878-c001",
+              "rrf_score": 0.023669467787114845,
+              "bm25_rank": 25,
+              "bm25_score": 23.38292485506992,
+              "dense_rank": 24,
+              "dense_score": 0.5017490386962891
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0973-c002",
+              "rrf_score": 0.023317307692307693,
+              "bm25_rank": 4,
+              "bm25_score": 28.005129480066046,
+              "dense_rank": 70,
+              "dense_score": 0.45960140228271484
+            },
+            {
+              "chunk_id": "stm32f4_rm0090-p0982-c001",
+              "rrf_score": 0.02303921568627451,
+              "bm25_rank": 8,
+              "bm25_score": 26.217004776757562,
+              "dense_rank": 60,
+              "dense_score": 0.46443870663642883
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

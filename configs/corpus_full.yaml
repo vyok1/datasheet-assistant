@@ -1,0 +1,7 @@
+# Full-corpus profile for the STM32 reference manual.
+# Unchanged PDFs and original 5-page profile are retained in corpus.yaml.
+documents:
+  - id: stm32f4_rm0090
+    title: "RM0090 STM32F405/407/427/429 Reference Manual"
+    url: "https://st.com/resource/en/reference_manual/dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf"
+    pages: null

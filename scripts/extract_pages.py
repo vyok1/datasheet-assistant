@@ -11,6 +11,7 @@ Page numbers are 1-based PDF page numbers (same as page_number in inventory.json
 
 Run from the repo root:  python scripts/extract_pages.py
 """
+import argparse
 import hashlib
 import json
 import sys
@@ -21,8 +22,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
-CONFIG = ROOT / "configs" / "corpus.yaml"
-OUT = ROOT / "data" / "pages" / "extracted.json"
+DEFAULT_CONFIG = ROOT / "configs" / "corpus.yaml"
+DEFAULT_OUTPUT = ROOT / "data" / "pages" / "extracted.json"
 
 
 def sha256(path: Path) -> str:
@@ -153,8 +154,15 @@ def process(doc: dict) -> tuple:
     return record, False
 
 
-def main() -> int:
-    docs = yaml.safe_load(CONFIG.read_text(encoding="utf-8"))["documents"]
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description="Extract configured PDF pages into JSON.")
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    args = parser.parse_args(argv)
+
+    config_path = args.config if args.config.is_absolute() else (Path.cwd() / args.config).resolve()
+    output_path = args.output if args.output.is_absolute() else (Path.cwd() / args.output).resolve()
+    docs = yaml.safe_load(config_path.read_text(encoding="utf-8"))["documents"]
     records, failures = [], 0
     for doc in docs:
         record, failed = process(doc)
@@ -163,11 +171,11 @@ def main() -> int:
 
     # No timestamp: identical inputs must give a byte-identical file.
     payload = {"pymupdf_version": pymupdf.__version__, "documents": records}
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    tmp = OUT.with_name(OUT.name + ".tmp")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = output_path.with_name(output_path.name + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    tmp.replace(OUT)
-    print(f"wrote {OUT}")
+    tmp.replace(output_path)
+    print(f"wrote {output_path}")
     return 1 if failures else 0
 
 

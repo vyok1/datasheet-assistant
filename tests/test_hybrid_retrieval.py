@@ -38,6 +38,7 @@ class MockEmbedder:
 
     def __init__(self, dim: int = 4, mapping: dict[str, list[float]] | None = None) -> None:
         self.dim = dim
+        self.embedding_dim = dim
         self.mapping = mapping or {}
 
     def encode(self, texts: list[str], normalize_embeddings: bool = True) -> np.ndarray:
@@ -181,6 +182,152 @@ def test_dense_retriever_validation():
         retriever.search("abc", top_k=0)
 
 
+def test_dense_retriever_embedding_cache(tmp_path: Path, sample_chunks: list[dict[str, Any]]):
+    cache_path = tmp_path / "dense_embeddings.npz"
+
+    class GuardedEmbedder(MockEmbedder):
+        def __init__(self) -> None:
+            super().__init__(dim=4)
+            self.reject_chunk_encoding = False
+
+        def encode(self, texts: list[str], normalize_embeddings: bool = True) -> np.ndarray:
+            if self.reject_chunk_encoding and len(texts) > 1:
+                raise AssertionError("cache should avoid encoding chunk embeddings")
+            return super().encode(texts, normalize_embeddings)
+
+    mock = GuardedEmbedder()
+
+    first = DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=mock,
+        embeddings_cache=cache_path,
+    )
+    assert cache_path.exists()
+
+    guarded = GuardedEmbedder()
+    guarded.reject_chunk_encoding = True
+    second = DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=guarded,
+        embeddings_cache=cache_path,
+    )
+    np.testing.assert_array_equal(second.chunk_embeddings, first.chunk_embeddings)
+
+    uncached = DenseRetriever(chunks_source=sample_chunks, embedder=MockEmbedder(dim=4))
+    cached = DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=MockEmbedder(dim=4),
+        embeddings_cache=cache_path,
+    )
+    assert [r["chunk_id"] for r in cached.search("GPIO", 3)] == [
+        r["chunk_id"] for r in uncached.search("GPIO", 3)
+    ]
+
+
+@pytest.mark.parametrize(
+    ("chunks_change", "model_name"),
+    [
+        ("text", "sentence-transformers/all-MiniLM-L6-v2"),
+        ("ids", "sentence-transformers/all-MiniLM-L6-v2"),
+        ("order", "sentence-transformers/all-MiniLM-L6-v2"),
+        (None, "changed-model"),
+    ],
+)
+def test_dense_retriever_invalidates_stale_embedding_cache(
+    tmp_path: Path,
+    sample_chunks: list[dict[str, Any]],
+    chunks_change: str | None,
+    model_name: str,
+):
+    cache_path = tmp_path / "dense_embeddings.npz"
+    DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=MockEmbedder(dim=4),
+        embeddings_cache=cache_path,
+    )
+
+    changed_chunks = [dict(chunk) for chunk in sample_chunks]
+    if chunks_change == "text":
+        changed_chunks[0]["text"] += " updated"
+    elif chunks_change == "ids":
+        changed_chunks[0]["chunk_id"] = "changed-id"
+    elif chunks_change == "order":
+        changed_chunks.reverse()
+
+    class CountingEmbedder(MockEmbedder):
+        def __init__(self) -> None:
+            super().__init__(dim=4)
+            self.chunk_encode_calls = 0
+
+        def encode(self, texts: list[str], normalize_embeddings: bool = True) -> np.ndarray:
+            if len(texts) > 1:
+                self.chunk_encode_calls += 1
+            return super().encode(texts, normalize_embeddings)
+
+    embedder = CountingEmbedder()
+    DenseRetriever(
+        chunks_source=changed_chunks,
+        embedder=embedder,
+        model_name=model_name,
+        embeddings_cache=cache_path,
+    )
+    assert embedder.chunk_encode_calls == 1
+
+
+def test_dense_retriever_recovers_corrupt_or_incompatible_cache(
+    tmp_path: Path,
+    sample_chunks: list[dict[str, Any]],
+):
+    cache_path = tmp_path / "dense_embeddings"
+    unrelated_file = tmp_path / "dense_embeddings.npz"
+    unrelated_file.write_bytes(b"leave this neighboring file untouched")
+    cache_path.write_bytes(b"not an npz cache")
+
+    retriever = DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=MockEmbedder(dim=4),
+        embeddings_cache=cache_path,
+    )
+    assert cache_path.exists()
+    assert retriever.chunk_embeddings.shape == (3, 4)
+    assert unrelated_file.read_bytes() == b"leave this neighboring file untouched"
+
+    with np.load(cache_path, allow_pickle=False) as cache:
+        cache_key = cache["cache_key"].item()
+    with cache_path.open("wb") as cache_file:
+        np.savez_compressed(
+            cache_file,
+            cache_version=DenseRetriever.CACHE_VERSION,
+            cache_key=cache_key,
+            embeddings=np.zeros((3, 2), dtype=np.float32),
+        )
+
+    retriever = DenseRetriever(
+        chunks_source=sample_chunks,
+        embedder=MockEmbedder(dim=4),
+        embeddings_cache=cache_path,
+    )
+    assert retriever.chunk_embeddings.shape == (3, 4)
+
+
+def test_dense_retriever_cache_cannot_overwrite_chunks_source(
+    tmp_path: Path,
+    sample_chunks: list[dict[str, Any]],
+):
+    chunks_path = tmp_path / "chunks.json"
+    chunks_path.write_text(json.dumps({"chunks": sample_chunks}), encoding="utf-8")
+    original = chunks_path.read_bytes()
+
+    with pytest.raises(ValueError, match="must not overwrite the chunks source"):
+        DenseRetriever(
+            chunks_source=chunks_path,
+            embedder=MockEmbedder(dim=4),
+            embeddings_cache=chunks_path,
+        )
+
+    assert chunks_path.read_bytes() == original
+
+
 # ==============================================================================
 # RRF and HybridRetriever Tests
 # ==============================================================================
@@ -302,6 +449,11 @@ def test_run_hybrid_comparison(sample_chunks_file: Path, sample_golden_set: dict
         assert "mean_mrr" in agg["retrievers"][strat]
         assert f"mean_ndcg_at_2" in agg["retrievers"][strat]
         assert "latency_ms" in agg["retrievers"][strat]
+    assert output["metadata"]["corpus_chunk_count"] == 3
+    assert output["metadata"]["corpus_page_count"] == 2
+    assert output["metadata"]["corpus_document_count"] == 1
+    assert "3 chunks across 2 pages and 1 document" in output["metadata"]["corpus_limitation_note"]
+    assert "Top-2 can include at most 2 chunks (66.67%" in output["metadata"]["corpus_limitation_note"]
 
 
 def test_percentile_helper():

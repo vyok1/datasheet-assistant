@@ -268,12 +268,22 @@ def run_hybrid_comparison(
         "by_category": category_summary,
     }
 
+    corpus_chunks = bm25_retriever.chunks
+    corpus_page_count = len({(chunk["doc_id"], chunk["page_number"]) for chunk in corpus_chunks})
+    corpus_document_count = len({chunk["doc_id"] for chunk in corpus_chunks})
+    top_k_corpus_count = min(top_k, len(corpus_chunks))
+    top_k_corpus_percentage = (
+        100 * top_k_corpus_count / len(corpus_chunks) if corpus_chunks else 0.0
+    )
+
     return {
         "metadata": {
             "description": "Evaluation and comparison of BM25, Dense, and Hybrid (RRF) retrieval strategies",
             "model_name": model_name,
             "embedding_dimensions": dense_retriever.embedding_dim,
-            "corpus_chunk_count": len(bm25_retriever.chunks),
+            "corpus_chunk_count": len(corpus_chunks),
+            "corpus_page_count": corpus_page_count,
+            "corpus_document_count": corpus_document_count,
             "question_count": count,
             "top_k": top_k,
             "rrf_k": hybrid_retriever.rrf_k,
@@ -284,10 +294,12 @@ def run_hybrid_comparison(
                 "rrf_score": "Reciprocal Rank Fusion score: sum(1 / (rrf_k + rank_i)) across BM25 and Dense",
             },
             "corpus_limitation_note": (
-                "The current corpus contains 11 chunks from 5 selected pages of RM0090. "
-                "Top-10 retrieval captures 10/11 chunks (90.9% of corpus), making high recall "
-                "expected across all methods. Differences between strategies primarily manifest "
-                "in ranking metrics (MRR and nDCG@10) and latency."
+                f"The indexed corpus contains {len(corpus_chunks):,} chunks across "
+                f"{corpus_page_count:,} pages and {corpus_document_count:,} document(s). "
+                "Evaluation conclusions are limited to the document coverage and relevance "
+                "labels in the golden set. "
+                f"Top-{top_k} can include at most {top_k_corpus_count:,} chunks "
+                f"({top_k_corpus_percentage:.2f}% of the indexed corpus)."
             ),
             "timing_methodology": (
                 "Each query is warmed up before measurement. Timing is measured over repeated "
