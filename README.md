@@ -184,9 +184,11 @@ datasheet-assistant/
 - **Language**: Python 3.11+
 - **PDF Extraction & Inspection**: `pymupdf` (MuPDF 1.24+)
 - **Lexical Retrieval**: `rank-bm25` (BM25Okapi implementation)
+- **Dense Semantic Retrieval**: `sentence-transformers` (`all-MiniLM-L6-v2`, local CPU execution)
+- **Hybrid Retrieval**: Reciprocal Rank Fusion (RRF) combining sparse BM25 and dense embeddings
 - **Configuration & Serialization**: `pyyaml`, standard library `json`
 - **Networking**: `requests` (streaming chunk downloads)
-- **Testing**: `pytest` (112 test cases)
+- **Testing**: `pytest` (138 test cases, including full offline mock suites)
 
 ---
 
@@ -249,6 +251,18 @@ The table below reports actual benchmark results recorded in [`benchmarks/baseli
 | **Mean nDCG@10** | **0.795** | High ranking concentration near top positions |
 | **Mean Query Latency** | **0.221 ms** | Python in-memory BM25 index |
 | **p95 Query Latency** | **0.377 ms** | Measured over $20 \times 20 = 400$ search iterations |
+
+### Hybrid Retrieval Comparison (BM25 vs Dense vs Hybrid)
+
+Evaluated in [`benchmarks/hybrid_retrieval_comparison.json`](file:///e:/praveen/pro/datasheet-assistant/benchmarks/hybrid_retrieval_comparison.json) across the 20 golden set queries:
+
+| Strategy | Recall@10 | MRR | nDCG@10 | Mean Query Latency | p95 Query Latency |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **BM25 (Baseline)** | 0.9000 | 0.8333 | 0.7952 | 0.133 ms | 0.212 ms |
+| **Dense (`all-MiniLM-L6-v2`)** | 1.0000 | 0.8583 | 0.8675 | 7.422 ms | 10.231 ms |
+| **Hybrid (RRF, $k=60$)** | 0.9750 | **0.8667** | 0.8506 | 7.648 ms | 9.818 ms |
+
+*Note: In the specification category, Dense scored an MRR of 0.3333 while BM25 achieved 1.0000; Hybrid fusion correctly retained the rank-1 position (MRR 1.0000), illustrating the resilience of RRF against individual modality failure modes.*
 
 ### Failure Analysis on Underperforming Queries
 
@@ -366,9 +380,9 @@ print(f"Original hits: {len(results)}, Expanded context blocks: {len(expanded_re
 - [x] Register-preserving BM25 search.
 - [x] Sibling window context expansion.
 - [x] Golden evaluation set (20 queries) & automated metric reporting.
+- [x] Dense embedding retrieval (`sentence-transformers/all-MiniLM-L6-v2` locally on CPU).
+- [x] Reciprocal Rank Fusion (RRF) for hybrid sparse + dense retrieval.
 - [ ] Scale chunking to the entire STM32F4 RM0090 manual (all 1,741 pages).
 - [ ] Add ESP32 Technical Reference Manual to corpus ingestion.
-- [ ] Introduce dense embedding retrieval (e.g., SentenceTransformers / HuggingFace models).
-- [ ] Implement Reciprocal Rank Fusion (RRF) for hybrid sparse + dense retrieval.
 - [ ] Integrate LLM grounded answer synthesis (using Gemini 1.5 / 2.0 API).
 - [ ] Add interactive CLI / web interface with exact PDF page snippet previews.
